@@ -9,13 +9,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class RCRTCCommand;
+@class RCRTCCommand, RCRTCOperation;
 
 @interface RCRTCCmdManager : NSObject
 
 - (void)push:(RCRTCCommand *)command;
 
-- (NSArray *)fetchOperation;
+- (NSArray<RCRTCOperation *> *)fetchOperations;
+
+@property (nonatomic, readonly)RCRTCCommand *currentCmd;
 
 @end
 

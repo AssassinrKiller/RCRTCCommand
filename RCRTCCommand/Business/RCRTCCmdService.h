@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)commandBWithParams:(NSDictionary *)params
                 completion:(void(^)(BOOL isSuccess, NSInteger code))completion;
 
+
+
+
 + (void)checkCommandFinished;
 
 @end

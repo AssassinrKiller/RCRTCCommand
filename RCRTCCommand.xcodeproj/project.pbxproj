@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9932C91827A2AAE2008D66F4 /* RCRTCIntroCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 9932C91727A2AAE2008D66F4 /* RCRTCIntroCommand.m */; };
 		994BAEA4279FA01B0020924C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 994BAEA3279FA01B0020924C /* AppDelegate.m */; };
 		994BAEA7279FA01B0020924C /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 994BAEA6279FA01B0020924C /* SceneDelegate.m */; };
 		994BAEAA279FA01B0020924C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 994BAEA9279FA01B0020924C /* ViewController.m */; };
@@ -43,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9932C91627A2AAE2008D66F4 /* RCRTCIntroCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCRTCIntroCommand.h; sourceTree = "<group>"; };
+		9932C91727A2AAE2008D66F4 /* RCRTCIntroCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCRTCIntroCommand.m; sourceTree = "<group>"; };
 		994BAE9F279FA01B0020924C /* RCRTCCommand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCRTCCommand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		994BAEA2279FA01B0020924C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		994BAEA3279FA01B0020924C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -102,6 +105,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9932C91527A2AAA8008D66F4 /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				9932C91627A2AAE2008D66F4 /* RCRTCIntroCommand.h */,
+				9932C91727A2AAE2008D66F4 /* RCRTCIntroCommand.m */,
+			);
+			path = Commands;
+			sourceTree = "<group>";
+		};
 		994BAE96279FA01A0020924C = {
 			isa = PBXGroup;
 			children = (
@@ -170,6 +182,7 @@
 				994BAF16279FAB820020924C /* RCRTCCommand.m */,
 				994BAF0B279FAB820020924C /* RCRTCOperation.h */,
 				994BAF15279FAB820020924C /* RCRTCOperation.m */,
+				9932C91527A2AAA8008D66F4 /* Commands */,
 				994BAF0D279FAB820020924C /* Operations */,
 			);
 			path = Business;
@@ -324,6 +337,7 @@
 				994BAF1B279FAB820020924C /* RCRTCCmdService.m in Sources */,
 				994BAF1D279FAB820020924C /* RCRTCCommand.m in Sources */,
 				994BAF1C279FAB820020924C /* RCRTCOperation.m in Sources */,
+				9932C91827A2AAE2008D66F4 /* RCRTCIntroCommand.m in Sources */,
 				994BAF1E279FAB820020924C /* RCRTCCmdManager.m in Sources */,
 				994BAF18279FAB820020924C /* RCRTCSayHiOperation.m in Sources */,
 				994BAF1A279FAB820020924C /* RCRTCSayHelloOperation.m in Sources */,

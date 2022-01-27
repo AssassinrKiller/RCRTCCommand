@@ -11,6 +11,10 @@
 #import "RCRTCSayHelloOperation.h"
 #import "RCRTCEndOperation.h"
 
+@interface RCRTCCmdManager ()
+@property (nonatomic, strong) RCRTCCommand *currentCmd;
+@end
+
 @implementation RCRTCCmdManager
 {
     dispatch_semaphore_t _semaphore;
@@ -31,7 +35,7 @@
     return self;
 }
 
-- (NSMutableArray<RCRTCOperation *> *)fetchOperation {
+- (NSArray<RCRTCOperation *> *)fetchOperations {
     NSMutableArray<RCRTCOperation *> *ops = nil;
     dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
     ops = [self fetchOperationInternal];
@@ -42,6 +46,9 @@
 - (NSMutableArray<RCRTCOperation *> *)fetchOperationInternal {
     RCRTCCommand *cmd = _head.next;
     NSMutableArray<RCRTCOperation *> *ops = [NSMutableArray array];
+    
+    NSOperation *lastOp = nil;
+    
     for (NSString *opName in cmd.opTypes) {
         NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Operation",opName];
         Class class = NSClassFromString(classStr);
@@ -54,14 +61,18 @@
         [op setCompletionBlock:^{
 //            NSLog(@"--- completion");
         }];
+        if (lastOp && cmd.executeType == RCRTCCommandExecuteType_sync) {
+            [op addDependency:lastOp];
+        }
+        lastOp = op;
         [ops addObject:op];
     }
-
+    
     if (!ops.count) return nil;
     
-//    if (ops.count == cmd.opTypes.count) {
-//
-//    }
+    if (ops.count == cmd.opTypes.count) {
+        self.currentCmd = cmd;
+    }
     
     if (--_cmdCount == 0) {
         _head.next = _tail;

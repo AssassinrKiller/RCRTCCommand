@@ -68,6 +68,7 @@
     [self setIsFinished:YES];
     [self setIsExecuting:NO];
     NSLog(@"%@ --- 执行结束了",self);
+//    [RCRTCCmdService checkCommandFinished];
 }
 
 

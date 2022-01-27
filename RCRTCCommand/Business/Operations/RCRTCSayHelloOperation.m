@@ -9,22 +9,21 @@
 
 @interface  RCRTCSayHelloOperation()
 
-@property (nonatomic, copy)void(^callback)(BOOL isSuccess, NSInteger code);
+@property (nonatomic, copy)void(^callback)(NSString *result);
 
 @end
-
 @implementation RCRTCSayHelloOperation
 
-
 - (void)prepare {
-    self.callback = self.command.params[@"callback"];
     NSLog(@"say hello --- 开始执行");
+    self.callback = self.command.params[@"sayHelloFinished"];
 }
 
 - (void)action {
     dispatch_sync(dispatch_get_global_queue(0, 0), ^{
         sleep(2);
         NSLog(@"耗时操作");
+        self.callback(@"say hello");
         [self finishedAction];
     });
 }

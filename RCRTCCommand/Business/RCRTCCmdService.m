@@ -8,6 +8,7 @@
 #import "RCRTCCmdService.h"
 #import "RCRTCCmdManager.h"
 #import "RCRTCCommand.h"
+#import "RCRTCIntroCommand.h"
 
 @interface RCRTCCmdService ()
 @property (nonatomic, strong) NSOperationQueue *runQueue;
@@ -31,7 +32,6 @@
 - (instancetype)init {
     if (self = [super init]) {
         _runQueue = [NSOperationQueue new];
-        _runQueue.maxConcurrentOperationCount = 1;
         _manager = [RCRTCCmdManager new];
         _fetchQueue = dispatch_queue_create("fetchCmd.queue", DISPATCH_QUEUE_SERIAL);
     }
@@ -47,7 +47,11 @@
     __weak typeof(self)weakSelf = self;
     dispatch_async(_fetchQueue, ^{
         __strong typeof(weakSelf)strongSelf = weakSelf;
-        [strongSelf fetchOperation];
+        if (strongSelf.runQueue.operationCount) {
+            NSLog(@"正在执行当前 command");
+            return;
+        }
+        [strongSelf fetchOperations];
     });
 }
 
@@ -55,21 +59,27 @@
     [[RCRTCCmdService shareInstance] tryToFetch];
 }
 
-- (void)fetchOperation {
-    NSArray *ops = [_manager fetchOperation];
+- (void)fetchOperations {
+    NSArray *ops = [_manager fetchOperations];
     for (NSOperation *op in ops) {
-        [_runQueue addOperation:op];
+        [self.runQueue addOperation:op];
     }
+    __weak typeof(self)weakSelf = self;
+    [self.runQueue addBarrierBlock:^{
+        __strong typeof(weakSelf)strongSelf = weakSelf;
+        strongSelf.manager.currentCmd.finished();
+//        [strongSelf tryToFetch];//执行下一个 cmd
+    }];
     NSLog(@"currentQueueCount:%@",@(self.runQueue.operationCount));
 }
 
 + (void)commandAWithParams:(NSDictionary *)params
                 completion:(void(^)(BOOL isSuccess, NSInteger code))completion {
     NSMutableDictionary *opParams = params.mutableCopy;
-    if (completion) {
-        [opParams setObject:completion forKey:@"callback"];
-    }
-    RCRTCCommand *cmd = [RCRTCCommand commandWithParams:opParams opTypes:@[@"SayHello",@"SayHi"]];
+    RCRTCCommand *cmd = [RCRTCIntroCommand commandWithParams:opParams
+                                                opTypes:@[@"SayHello",@"SayHi"]
+                                            executeType:RCRTCCommandExecuteType_async];
+    [cmd prepare];
     [[RCRTCCmdService shareInstance] addCommand:cmd];
 }
 
@@ -79,7 +89,9 @@
     if (completion) {
         [opParams setObject:completion forKey:@"callback"];
     }
-    RCRTCCommand *cmd = [RCRTCCommand commandWithParams:opParams opTypes:@[@"End"]];
+    RCRTCCommand *cmd = [RCRTCCommand commandWithParams:opParams
+                                                opTypes:@[@"End"]
+                                            executeType:RCRTCCommandExecuteType_sync];
     [[RCRTCCmdService shareInstance] addCommand:cmd];
 }
 
