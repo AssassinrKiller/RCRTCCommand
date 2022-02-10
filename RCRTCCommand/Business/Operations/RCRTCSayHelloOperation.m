@@ -19,10 +19,10 @@
 
 - (void)action {
     dispatch_sync(dispatch_get_global_queue(0, 0), ^{
-        sleep(4);
-        NSLog(@"耗时操作 say hello");
+//        sleep(4);
+//        NSLog(@"耗时操作 say hello");
         self.response = @"xuhuan";
-        self.isContinue = YES;
+        self.isSuccess = NO;
         [self finishedAction];
     });
 }

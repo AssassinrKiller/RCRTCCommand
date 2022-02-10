@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RCRTCCommand.h"
+#import "RCRTCCommand+private.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,8 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) BOOL isFinished;
 
 @property (nonatomic, strong) RCRTCCommand *command;
-@property (nonatomic, strong) id response;
 @property (nonatomic, assign) BOOL isContinue;
+@property (nonatomic, strong) id response;
+@property (nonatomic, assign) BOOL isSuccess;
+@property (nonatomic, assign) NSInteger code;
 
 @end
 

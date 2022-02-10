@@ -17,7 +17,11 @@
     
 }
 
-- (void)completion {
+- (void)fetchOpResponse:(id)response {
+    
+}
+
+- (void)finished {
     
 }
 

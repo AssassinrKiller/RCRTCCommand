@@ -6,45 +6,66 @@
 //
 
 #import "RCRTCCommand.h"
+#import "RCRTCCmdService.h"
 
 @interface RCRTCCommand ()
-@property (nonatomic,   copy) NSArray *opNames;
-@property (nonatomic, assign) RCRTCCommandExecuteType executeType;
+@property (nonatomic,   copy) NSDictionary *params;
 @property (nonatomic, assign) BOOL isContinue;
 @end
 
 @implementation RCRTCCommand
 
-+ (RCRTCCommand *)commandWithParams:(NSDictionary *)params
-                        executeType:(RCRTCCommandExecuteType)executeType {
-    RCRTCCommand *cmd = [RCRTCCommand new];
-    cmd.params = params;
-    cmd.executeType = executeType;
-    cmd.isContinue = YES;
-    return cmd;
-}
-
 - (instancetype)initWithParams:(NSDictionary *)params {
     if (self = [super init]) {
         self.params = params;
+        self.isContinue = YES;
     }
     return self;
 }
 
-- (void)prepare {
-    NSLog(@"cmd config op param");
+- (void)start {
+    NSLog(@"cmd 开始执行");
+    [self prepare];
 }
 
 - (void)finishedWithOpName:(NSString *)opName
                   response:(id)response
                 isContinue:(BOOL)isContinue {
+    NSLog(@"当前 command 子任务 %@ 结束, 是否继续执行:%@", opName, @(isContinue));
     self.isContinue = isContinue;
-    NSLog(@"%@ op结束, 执行结果:%@, 是否继续执行剩下的op:%@", opName, response, @(isContinue));
+    if (response) {
+        [self fetchOpResponse:response];
+    }
 }
 
 - (void)completion {
     NSLog(@"cmd completion");
+    [self finished];
 }
+
+#pragma mark - RCRTCCommandInterface
+- (void)prepare {
+    
+}
+
+- (void)fetchOpResponse:(id)response {
+    
+}
+
+- (void)finished {
+    
+}
+
+- (NSArray *)opNames {
+    return @[];
+}
+
+- (RCRTCCommandExecuteType)executeType {
+    return RCRTCCommandExecuteType_sync;
+}
+
+
+#pragma mark - private
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"ops:%@",self.opNames];

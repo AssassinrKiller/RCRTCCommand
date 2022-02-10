@@ -7,12 +7,10 @@
 
 #import "RCRTCCmdManager.h"
 #import "RCRTCCommand.h"
-#import "RCRTCSayHiOperation.h"
-#import "RCRTCSayHelloOperation.h"
-#import "RCRTCEndOperation.h"
+#import "RCRTCOperation.h"
 
 @interface RCRTCCmdManager ()
-@property (nonatomic, strong) RCRTCCommand *currentCmd;
+@property (nonatomic, weak) RCRTCCommand *currentCmd;
 @end
 
 @implementation RCRTCCmdManager
@@ -39,16 +37,56 @@
     NSMutableArray<RCRTCOperation *> *ops = nil;
     dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
     ops = [self fetchOperationInternal];
+    [self setDependencyWithOps:ops];
     dispatch_semaphore_signal(_semaphore);
     return ops;
+}
+
+- (void)setDependencyWithOps:(NSArray *)ops{
+    RCRTCCommandExecuteType executeType = self.currentCmd.executeType;
+    switch (executeType) {
+        case RCRTCCommandExecuteType_sync:
+        {
+            RCRTCOperation *lastOp = nil;
+            for (RCRTCOperation *op in ops) {
+                if (lastOp) {
+                    [op addDependency:lastOp];
+                }
+                lastOp = op;
+            }
+        }
+            break;
+        case RCRTCCommandExecuteType_async:
+        {
+            // nothing to do
+        }
+            break;
+        case RCRTCCommandExecuteType_custom:
+        {
+            //需要添加复杂的依赖关系 queuePriority 只能决定开始的顺序, addDependency 才能决定结束的顺序
+            for (NSInteger i = 0; i < ops.count; i++) {
+                RCRTCOperation *op_i = [ops objectAtIndex:i];
+                for (NSInteger j = 0; j < ops.count; j++) {
+                    if (i == j) continue;
+                    RCRTCOperation *op_j = [ops objectAtIndex:j];
+                    if (op_i.queuePriority > op_j.queuePriority) {
+                        [op_j addDependency:op_i];
+                    } else if (op_i.queuePriority < op_j.queuePriority) {
+                        [op_i addDependency:op_j];
+                    }
+                }
+                NSLog(@"op:%@ 的依赖:%@", op_i.name, op_i.dependencies);
+            }
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 - (NSMutableArray<RCRTCOperation *> *)fetchOperationInternal {
     RCRTCCommand *cmd = _head.next;
     NSMutableArray<RCRTCOperation *> *ops = [NSMutableArray array];
-    
-    NSOperation *lastOp = nil;
-    
     for (NSString *opName in cmd.opNames) {
         NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Operation",opName];
         Class class = NSClassFromString(classStr);
@@ -59,13 +97,10 @@
         RCRTCOperation *op = [class new];
         op.name = opName;
         op.command = cmd;
-        [op setCompletionBlock:^{
+        op.queuePriority = (NSOperationQueuePriority)[cmd.sequenceDic[opName] integerValue];
+//        [op setCompletionBlock:^{
 //            NSLog(@"--- completion");
-        }];
-        if (lastOp && cmd.executeType == RCRTCCommandExecuteType_sync) {
-            [op addDependency:lastOp];
-        }
-        lastOp = op;
+//        }];
         [ops addObject:op];
     }
     

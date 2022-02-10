@@ -8,12 +8,14 @@
 #import "RCRTCJoinRoomOperation.h"
 
 @implementation RCRTCJoinRoomOperation
+
 - (void)prepare {
     
 }
 
 - (void)action {
-    
+    NSLog(@"join room signal & media server");
+    [self finishedAction];
 }
 
 - (NSString *)description {

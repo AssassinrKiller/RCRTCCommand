@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray<RCRTCOperation *> *)fetchOperations;
 
-@property (nonatomic, readonly)RCRTCCommand *currentCmd;
+@property (nonatomic, readonly, weak)RCRTCCommand *currentCmd;
 
 @end
 

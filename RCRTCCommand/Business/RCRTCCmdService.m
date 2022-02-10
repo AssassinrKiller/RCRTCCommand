@@ -7,8 +7,7 @@
 
 #import "RCRTCCmdService.h"
 #import "RCRTCCmdManager.h"
-#import "RCRTCCommand.h"
-#import "RCRTCIntroCommand.h"
+#import "RCRTCCommand+private.h"
 
 @interface RCRTCCmdService ()
 @property (nonatomic, strong) NSOperationQueue *runQueue;
@@ -95,7 +94,7 @@
         return;
     }
     RCRTCCommand *cmd = [[cmdClass alloc] initWithParams:params];
-    [cmd prepare];
+    [cmd start];
     [[RCRTCCmdService shareInstance] addCommand:cmd];
 }
 

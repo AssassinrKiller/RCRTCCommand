@@ -10,8 +10,6 @@
 
 @interface RCRTCOperation ()
 
-@property (nonatomic, assign) BOOL isSuccess;
-@property (nonatomic, assign) NSInteger code;
 @property (assign) BOOL isExecuting;
 @property (assign) BOOL isFinished;
 
@@ -56,24 +54,30 @@
 }
 
 - (BOOL)checkCommandStatus {
-    BOOL res = self.command.isContinue;
-    if (!res) {
-        self.isSuccess = NO;
-        self.code = _isSuccess ? 0 : -1;
+    _isContinue = self.command.isContinue;
+    if (!_isContinue) {
+        _isSuccess = NO;
+        _code = _isSuccess ? 0 : -1;
     }
-    return res;
-}
-
-- (void)setIsContinue:(BOOL)isContinue {
-    [self.command finishedWithOpName:self.name
-                            response:self.response
-                          isContinue:isContinue];
+    return _isContinue;
 }
 
 - (void)finishedAction {
     [self setIsFinished:YES];
     [self setIsExecuting:NO];
     NSLog(@"%@ --- 执行结束了",self);
+    [self messageToCommand];
+}
+
+- (void)setIsSuccess:(BOOL)isSuccess {
+    _isSuccess = isSuccess;
+    _isContinue = _isSuccess;
+}
+
+- (void)messageToCommand {
+    [self.command finishedWithOpName:self.name
+                            response:self.response
+                          isContinue:self.isContinue];
 }
 
 

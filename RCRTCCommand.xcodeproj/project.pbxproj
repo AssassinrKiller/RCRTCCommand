@@ -52,7 +52,7 @@
 		9932C92027B3AF94008D66F4 /* RCRTCJoinRoomOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCRTCJoinRoomOperation.m; sourceTree = "<group>"; };
 		9932C92527B3AFB4008D66F4 /* RCRTCJoinRoomCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCRTCJoinRoomCommand.h; sourceTree = "<group>"; };
 		9932C92627B3AFB4008D66F4 /* RCRTCJoinRoomCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCRTCJoinRoomCommand.m; sourceTree = "<group>"; };
-		9932C92B27B3C346008D66F4 /* RCRTCOperation+private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCRTCOperation+private.h"; sourceTree = "<group>"; };
+		9932C94027B51A53008D66F4 /* RCRTCCommand+private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCRTCCommand+private.h"; sourceTree = "<group>"; };
 		994BAE9F279FA01B0020924C /* RCRTCCommand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCRTCCommand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		994BAEA2279FA01B0020924C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		994BAEA3279FA01B0020924C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -189,9 +189,9 @@
 				994BAF17279FAB820020924C /* RCRTCCmdManager.m */,
 				994BAF0A279FAB820020924C /* RCRTCCommand.h */,
 				994BAF16279FAB820020924C /* RCRTCCommand.m */,
+				9932C94027B51A53008D66F4 /* RCRTCCommand+private.h */,
 				994BAF0B279FAB820020924C /* RCRTCOperation.h */,
 				994BAF15279FAB820020924C /* RCRTCOperation.m */,
-				9932C92B27B3C346008D66F4 /* RCRTCOperation+private.h */,
 				9932C91527A2AAA8008D66F4 /* Commands */,
 				994BAF0D279FAB820020924C /* Operations */,
 			);

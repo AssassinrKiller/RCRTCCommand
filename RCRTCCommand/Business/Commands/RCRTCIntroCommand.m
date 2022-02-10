@@ -15,25 +15,36 @@
 
 @implementation RCRTCIntroCommand
 
+- (void)dealloc {
+    NSLog(@"RCRTCIntroCommand dealloc");
+}
+
+- (RCRTCCommandExecuteType)executeType {
+    return RCRTCCommandExecuteType_custom;
+}
+
+- (NSDictionary<NSString *,NSNumber *> *)sequenceDic {
+    return @{@"SayHello":@(NSOperationQueuePriorityNormal),
+             @"SayHi":@(NSOperationQueuePriorityNormal),
+             @"End":@(NSOperationQueuePriorityHigh)};
+}
+
 - (NSArray *)opNames {
-    return @[@"SayHello",@"SayHi"];
+    return @[@"SayHello",@"SayHi",@"End"];
 }
 
 - (void)prepare {
     self.callback = self.params[@"callback"];
 }
 
-- (void)finishedWithOpName:(NSString *)opName
-                  response:(id)response
-                isContinue:(BOOL)isContinue {
-    [super finishedWithOpName:opName response:response isContinue:isContinue];
+- (void)fetchOpResponse:(id)response {
     NSLog(@"response:%@",response);
 }
 
-- (void)completion {
+- (void)finished {
     if (self.callback) {
         self.callback(YES, 0);
-    }
+    }    
 }
 
 @end

@@ -6,36 +6,51 @@
 //
 
 #import <Foundation/Foundation.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
-//command 产生的 op 执行方式
 typedef NS_ENUM(NSInteger, RCRTCCommandExecuteType) {
-    RCRTCCommandExecuteType_sync  = 0, //依次执行前后依赖
-    RCRTCCommandExecuteType_async      //并发执行, 都执行完通知
+    RCRTCCommandExecuteType_sync   = 0,  //依次执行前后依赖
+    RCRTCCommandExecuteType_async  = 1,  //并发执行, 都执行完通知
+    RCRTCCommandExecuteType_custom = 2   //自定义执行顺序
 };
 
-@interface RCRTCCommand : NSObject
+@protocol  RCRTCCommandInterface <NSObject>
 
-@property (nonatomic, readonly,   copy) NSArray *opNames;
-@property (nonatomic, readonly, assign) RCRTCCommandExecuteType executeType;
-@property (nonatomic, readonly, assign) BOOL isContinue;
-@property (nonatomic, readonly, strong) id response;
+/// 子任务未开始之前先执行, 修改或调整参数
+- (void)prepare;
 
-@property (nonatomic, copy) NSDictionary *params;
+/// 当子任务执行结束当前 command 收到回调
+/// @param response op 执行需要传递给到 cmd 的结果
+- (void)fetchOpResponse:(id)response;
+
+/// 所有的子任务都执行完成回调
+- (void)finished;
+
+/// 需要构建的 operation 名称数组
+- (NSArray *)opNames;
+
+/// command 包含的 operation 执行方式, 默认是 RCRTCCommandExecuteType_sync
+- (RCRTCCommandExecuteType)executeType;
+
+@optional;
+/*
+ 自定义任务执行顺序,当 executeType == RCRTCCommandExecuteType_custom 生效.
+ 设置系统优先级, 如下:
+ @{@"SayHello":@(NSOperationQueuePriorityHigh),
+ @"SayHi":@(NSOperationQueuePriorityHigh),
+ @"End":@(NSOperationQueuePriorityNormal)}
+ */
+- (NSDictionary<NSString *,NSNumber *> *)sequenceDic;
+
+@end
+
+@interface RCRTCCommand : NSObject <RCRTCCommandInterface>
 
 @property (nonatomic,   weak) RCRTCCommand *prev;
 @property (nonatomic, strong) RCRTCCommand *next;
 
-- (instancetype)initWithParams:(NSDictionary *)params;
-
-- (void)prepare;
-
-- (void)finishedWithOpName:(NSString *)opName
-                  response:(id)response
-                isContinue:(BOOL)isContinue;
-
-- (void)completion;
+@property (nonatomic, readonly,  copy) NSDictionary *params;
+@property (nonatomic, readonly, assign) BOOL isContinue;
 
 @end
 
