@@ -19,14 +19,9 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [RCRTCCmdService commandAWithParams:@{@"name":@"xuhuan"} completion:^(BOOL isSuccess, NSInteger code) {
-        NSLog(@"命令A 执行回调");
-        
+    [RCRTCCmdService commandWithCmdName:@"Intro" params:@{@"name":@"xuhuan"} completion:^(BOOL isSuccess, NSInteger code) {
+        NSLog(@"intro cmd 执行完成");
     }];
-    
-//    [RCRTCCmdService commandBWithParams:@{@"roomId":@"12345"} completion:^(BOOL isSuccess, NSInteger code) {
-//        NSLog(@"命令B 执行回调");
-//    }];
 }
 
 

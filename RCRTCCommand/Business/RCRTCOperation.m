@@ -9,10 +9,11 @@
 #import "RCRTCCmdService.h"
 
 @interface RCRTCOperation ()
-@property (assign) BOOL isExecuting;
-@property (assign) BOOL isFinished;
+
 @property (nonatomic, assign) BOOL isSuccess;
 @property (nonatomic, assign) NSInteger code;
+@property (assign) BOOL isExecuting;
+@property (assign) BOOL isFinished;
 
 @end
 
@@ -55,20 +56,24 @@
 }
 
 - (BOOL)checkCommandStatus {
-//    BOOL res = _commands.firstObject.status == RCRTCNCSNormal;
-//    if (!res) {
-//        self.isSuccess = _commands.firstObject.status == RCRTCNCSCounterAct ? YES : NO;
-//        self.code = _isSuccess ? RCRTCCodeSuccess : RCRTCCodeIllegalState;
-//    }
-    BOOL res = YES;
+    BOOL res = self.command.isContinue;
+    if (!res) {
+        self.isSuccess = NO;
+        self.code = _isSuccess ? 0 : -1;
+    }
     return res;
+}
+
+- (void)setIsContinue:(BOOL)isContinue {
+    [self.command finishedWithOpName:self.name
+                            response:self.response
+                          isContinue:isContinue];
 }
 
 - (void)finishedAction {
     [self setIsFinished:YES];
     [self setIsExecuting:NO];
     NSLog(@"%@ --- 执行结束了",self);
-//    [RCRTCCmdService checkCommandFinished];
 }
 
 

@@ -15,13 +15,19 @@
 
 @implementation RCRTCIntroCommand
 
+- (NSArray *)opNames {
+    return @[@"SayHello",@"SayHi"];
+}
+
 - (void)prepare {
-    NSMutableDictionary *opParams = [self.params mutableCopy];
-    void(^sayHelloFinished)(NSString *result) = ^(NSString *result) {
-        NSLog(@"%@",result);
-    };
-    [opParams setValue:sayHelloFinished forKey:@"sayHelloFinished"];
-    self.params = opParams;
+    self.callback = self.params[@"callback"];
+}
+
+- (void)finishedWithOpName:(NSString *)opName
+                  response:(id)response
+                isContinue:(BOOL)isContinue {
+    [super finishedWithOpName:opName response:response isContinue:isContinue];
+    NSLog(@"response:%@",response);
 }
 
 - (void)completion {

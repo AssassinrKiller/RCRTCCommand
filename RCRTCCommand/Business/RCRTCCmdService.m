@@ -29,6 +29,14 @@
     return instance;
 }
 
++ (void)checkCommandFinished {
+    [[RCRTCCmdService shareInstance] tryToFetch];
+}
+
++ (void)cancelCurrentCmd {
+    [[RCRTCCmdService shareInstance].runQueue cancelAllOperations];
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         _runQueue = [NSOperationQueue new];
@@ -55,43 +63,39 @@
     });
 }
 
-+ (void)checkCommandFinished {
-    [[RCRTCCmdService shareInstance] tryToFetch];
-}
-
 - (void)fetchOperations {
     NSArray *ops = [_manager fetchOperations];
+    
     for (NSOperation *op in ops) {
         [self.runQueue addOperation:op];
     }
     __weak typeof(self)weakSelf = self;
+    
+    if (!ops.count) return;
+    
     [self.runQueue addBarrierBlock:^{
         __strong typeof(weakSelf)strongSelf = weakSelf;
-        strongSelf.manager.currentCmd.finished();
-//        [strongSelf tryToFetch];//执行下一个 cmd
+        [strongSelf.manager.currentCmd completion];
+        [strongSelf tryToFetch];//执行下一个 cmd
     }];
     NSLog(@"currentQueueCount:%@",@(self.runQueue.operationCount));
 }
 
-+ (void)commandAWithParams:(NSDictionary *)params
-                completion:(void(^)(BOOL isSuccess, NSInteger code))completion {
-    NSMutableDictionary *opParams = params.mutableCopy;
-    RCRTCCommand *cmd = [RCRTCIntroCommand commandWithParams:opParams
-                                                opTypes:@[@"SayHello",@"SayHi"]
-                                            executeType:RCRTCCommandExecuteType_async];
-    [cmd prepare];
-    [[RCRTCCmdService shareInstance] addCommand:cmd];
-}
-
-+ (void)commandBWithParams:(NSDictionary *)params
-                completion:(void(^)(BOOL isSuccess, NSInteger code))completion {
-    NSMutableDictionary *opParams = params.mutableCopy;
++ (void)commandWithCmdName:(NSString *)cmdName
+                    params:(NSDictionary *)params
+                completion:(id)completion {
+    NSMutableDictionary *opParams = [params mutableCopy];
     if (completion) {
-        [opParams setObject:completion forKey:@"callback"];
+        opParams[@"callback"] = completion;
     }
-    RCRTCCommand *cmd = [RCRTCCommand commandWithParams:opParams
-                                                opTypes:@[@"End"]
-                                            executeType:RCRTCCommandExecuteType_sync];
+    NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Command",cmdName];
+    Class cmdClass = NSClassFromString(classStr);
+    if (!cmdClass) {
+        NSLog(@"cmd is not exist");
+        return;
+    }
+    RCRTCCommand *cmd = [[cmdClass alloc] initWithParams:params];
+    [cmd prepare];
     [[RCRTCCmdService shareInstance] addCommand:cmd];
 }
 

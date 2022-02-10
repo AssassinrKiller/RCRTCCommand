@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) BOOL isFinished;
 
 @property (nonatomic, strong) RCRTCCommand *command;
+@property (nonatomic, strong) id response;
+@property (nonatomic, assign) BOOL isContinue;
 
 @end
 

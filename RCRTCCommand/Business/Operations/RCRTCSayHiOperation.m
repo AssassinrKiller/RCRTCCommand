@@ -8,13 +8,14 @@
 #import "RCRTCSayHiOperation.h"
 
 @implementation RCRTCSayHiOperation
+
 - (void)prepare {
-//    NSLog(@"%@",self.command.params);
+    NSLog(@"say hi --- 开始执行");
 }
 
 - (void)action {
-    NSLog(@"say hi --- 开始执行");
     sleep(2);
+    NSLog(@"耗时操作 say Hi");
     [self finishedAction];
 }
 

@@ -17,20 +17,23 @@ typedef NS_ENUM(NSInteger, RCRTCCommandExecuteType) {
 
 @interface RCRTCCommand : NSObject
 
+@property (nonatomic, readonly,   copy) NSArray *opNames;
+@property (nonatomic, readonly, assign) RCRTCCommandExecuteType executeType;
+@property (nonatomic, readonly, assign) BOOL isContinue;
+@property (nonatomic, readonly, strong) id response;
+
 @property (nonatomic, copy) NSDictionary *params;
-@property (nonatomic, readonly, copy) NSArray *opTypes;
-@property (nonatomic, readonly,assign) RCRTCCommandExecuteType executeType;
-@property (nonatomic,   copy) void(^finished)(void);
-@property (nonatomic, strong) id response;
 
 @property (nonatomic,   weak) RCRTCCommand *prev;
 @property (nonatomic, strong) RCRTCCommand *next;
 
-+ (RCRTCCommand *)commandWithParams:(NSDictionary *)params
-                            opTypes:(NSArray *)opTypes
-                        executeType:(RCRTCCommandExecuteType)executeType;
+- (instancetype)initWithParams:(NSDictionary *)params;
 
 - (void)prepare;
+
+- (void)finishedWithOpName:(NSString *)opName
+                  response:(id)response
+                isContinue:(BOOL)isContinue;
 
 - (void)completion;
 

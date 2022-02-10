@@ -8,41 +8,46 @@
 #import "RCRTCCommand.h"
 
 @interface RCRTCCommand ()
-@property (nonatomic,  copy) NSArray *opTypes;
-@property (nonatomic,assign) RCRTCCommandExecuteType executeType;
-//@property (nonatomic,  copy) NSDictionary *params;
+@property (nonatomic,   copy) NSArray *opNames;
+@property (nonatomic, assign) RCRTCCommandExecuteType executeType;
+@property (nonatomic, assign) BOOL isContinue;
 @end
 
 @implementation RCRTCCommand
 
 + (RCRTCCommand *)commandWithParams:(NSDictionary *)params
-                            opTypes:(NSArray *)opTypes
                         executeType:(RCRTCCommandExecuteType)executeType {
     RCRTCCommand *cmd = [RCRTCCommand new];
     cmd.params = params;
-    cmd.opTypes = opTypes;
     cmd.executeType = executeType;
+    cmd.isContinue = YES;
     return cmd;
+}
+
+- (instancetype)initWithParams:(NSDictionary *)params {
+    if (self = [super init]) {
+        self.params = params;
+    }
+    return self;
 }
 
 - (void)prepare {
     NSLog(@"cmd config op param");
 }
 
+- (void)finishedWithOpName:(NSString *)opName
+                  response:(id)response
+                isContinue:(BOOL)isContinue {
+    self.isContinue = isContinue;
+    NSLog(@"%@ op结束, 执行结果:%@, 是否继续执行剩下的op:%@", opName, response, @(isContinue));
+}
+
 - (void)completion {
     NSLog(@"cmd completion");
 }
 
-- (void (^)(void))finished {
-    __weak typeof(self)weakSelf = self;
-    return ^(void){
-        __strong typeof(weakSelf)strongSelf = weakSelf;
-        [strongSelf completion];
-    };
-}
-
 - (NSString *)description {
-    return [NSString stringWithFormat:@"ops:%@",self.opTypes];
+    return [NSString stringWithFormat:@"ops:%@",self.opNames];
 }
 
 

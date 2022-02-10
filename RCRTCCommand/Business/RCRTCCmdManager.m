@@ -49,7 +49,7 @@
     
     NSOperation *lastOp = nil;
     
-    for (NSString *opName in cmd.opTypes) {
+    for (NSString *opName in cmd.opNames) {
         NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Operation",opName];
         Class class = NSClassFromString(classStr);
         if (!class) {
@@ -57,6 +57,7 @@
             continue;
         }
         RCRTCOperation *op = [class new];
+        op.name = opName;
         op.command = cmd;
         [op setCompletionBlock:^{
 //            NSLog(@"--- completion");
@@ -70,7 +71,7 @@
     
     if (!ops.count) return nil;
     
-    if (ops.count == cmd.opTypes.count) {
+    if (ops.count == cmd.opNames.count) {
         self.currentCmd = cmd;
     }
     

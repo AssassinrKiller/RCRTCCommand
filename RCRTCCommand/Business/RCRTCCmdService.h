@@ -11,14 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RCRTCCmdService : NSObject
 
-+ (void)commandAWithParams:(NSDictionary *)params
-                completion:(void(^)(BOOL isSuccess, NSInteger code))completion;
++ (void)commandWithCmdName:(NSString *)cmdName
+                    params:(NSDictionary *)params
+                completion:(id)completion;
 
-+ (void)commandBWithParams:(NSDictionary *)params
-                completion:(void(^)(BOOL isSuccess, NSInteger code))completion;
-
-
-
++ (void)cancelCurrentCmd;
 
 + (void)checkCommandFinished;
 
