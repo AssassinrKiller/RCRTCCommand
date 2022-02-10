@@ -64,6 +64,10 @@
     return RCRTCCommandExecuteType_sync;
 }
 
+- (NSDictionary<NSString *,NSNumber *> *)sequenceDic {
+    return nil;
+}
+
 
 #pragma mark - private
 

@@ -22,6 +22,7 @@
     [RCRTCCmdService commandWithCmdName:@"Intro" params:@{@"name":@"xuhuan"} completion:^(BOOL isSuccess, NSInteger code) {
         NSLog(@"intro cmd 执行完成");
     }];
+    [RCRTCCmdService commandWithCmdName:@"JoinRoom" params:@{@"roomId":@"333"} completion:nil];
 }
 
 
