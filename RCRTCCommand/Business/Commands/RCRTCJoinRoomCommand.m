@@ -25,4 +25,8 @@
     
 }
 
+- (NSString *)description {
+    return @"join room cmd";
+}
+
 @end

@@ -15,18 +15,14 @@
 
 @implementation RCRTCIntroCommand
 
-- (void)dealloc {
-    NSLog(@"RCRTCIntroCommand dealloc");
-}
-
 - (RCRTCCommandExecuteType)executeType {
     return RCRTCCommandExecuteType_custom;
 }
 
 - (NSDictionary<NSString *,NSNumber *> *)sequenceDic {
-    return @{@"SayHello":@(NSOperationQueuePriorityNormal),
-             @"SayHi":@(NSOperationQueuePriorityNormal),
-             @"End":@(NSOperationQueuePriorityHigh)};
+    return @{@"SayHello":@(NSOperationQueuePriorityHigh),
+             @"SayHi":@(NSOperationQueuePriorityHigh),
+             @"End":@(NSOperationQueuePriorityNormal)};
 }
 
 - (NSArray *)opNames {
@@ -45,6 +41,10 @@
     if (self.callback) {
         self.callback(YES, 0);
     }    
+}
+
+- (NSString *)description {
+    return @"intro cmd";
 }
 
 @end

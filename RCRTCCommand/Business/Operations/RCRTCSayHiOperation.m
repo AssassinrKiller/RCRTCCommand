@@ -13,7 +13,7 @@
 }
 
 - (void)action {
-//    sleep(2);
+    sleep(2);
     NSLog(@"耗时操作 say Hi");
     [self finishedAction];
 }

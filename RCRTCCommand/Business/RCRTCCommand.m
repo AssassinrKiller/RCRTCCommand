@@ -15,6 +15,10 @@
 
 @implementation RCRTCCommand
 
+- (void)dealloc {
+    NSLog(@"%@ dealloc", self);
+}
+
 - (instancetype)initWithParams:(NSDictionary *)params {
     if (self = [super init]) {
         self.params = params;
@@ -67,14 +71,6 @@
 - (NSDictionary<NSString *,NSNumber *> *)sequenceDic {
     return nil;
 }
-
-
-#pragma mark - private
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"ops:%@",self.opNames];
-}
-
 
 
 @end

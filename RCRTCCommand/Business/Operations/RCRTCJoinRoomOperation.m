@@ -19,7 +19,7 @@
 }
 
 - (NSString *)description {
-    return @"加房间";
+    return @"join room op";
 }
 
 @end
