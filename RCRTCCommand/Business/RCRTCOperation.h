@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)checkIsCancelled;
 - (BOOL)checkCommandStatus;
 
-@property (readonly) BOOL isExecuting;
-@property (readonly) BOOL isFinished;
+//@property (readonly) BOOL isExecuting;
+//@property (readonly) BOOL isFinished;
 
 @property (nonatomic, strong) RCRTCCommand *command;
 @property (nonatomic, assign) BOOL isContinue;

@@ -10,10 +10,6 @@
 
 @interface RCRTCOperation ()
 
-
-//@property (assign) BOOL isExecuting;
-//@property (nonatomic, assign) BOOL isFinished;
-
 @property (nonatomic, readwrite, getter=isExecuting) BOOL executing;
 @property (nonatomic, readwrite, getter=isFinished) BOOL finished;
 
@@ -80,12 +76,9 @@
 }
 
 - (void)finishedAction {
-    
     self.executing = NO;
     self.finished = YES;
-    
     NSLog(@"%@ --- 执行结束了",self);
-    
     [self messageToCommand];
 }
 
@@ -100,31 +93,29 @@
                           isContinue:self.isContinue];
 }
 
-//+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key {
-//    return YES;
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key {
+    return YES;
+}
+
+//- (void)setExecuting:(BOOL)executing {
+//    [self willChangeValueForKey:@"isExecuting"];
+//    _executing = executing;
+//    [self didChangeValueForKey:@"isExecuting"];
 //}
-
-- (void)setExecuting:(BOOL)executing {
-    [self willChangeValueForKey:@"isExecuting"];
-    _executing = executing;
-    [self didChangeValueForKey:@"isExecuting"];
-}
-
-- (BOOL)isExecuting {
-    return _executing;
-}
-
-- (void)setFinished:(BOOL)finished {
-    if (_finished != finished) {
-        [self willChangeValueForKey:@"isFinished"];
-        _finished = finished;
-        [self didChangeValueForKey:@"isFinished"];
-    }
-}
-
-- (BOOL)isFinished {
-    return _finished;
-}
+//
+//- (BOOL)isExecuting {
+//    return _executing;
+//}
+//
+//- (void)setFinished:(BOOL)finished {
+//    [self willChangeValueForKey:@"isFinished"];
+//    _finished = finished;
+//    [self didChangeValueForKey:@"isFinished"];
+//}
+//
+//- (BOOL)isFinished {
+//    return _finished;
+//}
 
 - (BOOL)isAsynchronous {
     return YES;
