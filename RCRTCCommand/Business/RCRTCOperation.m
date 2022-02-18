@@ -10,30 +10,47 @@
 
 @interface RCRTCOperation ()
 
-@property (assign) BOOL isExecuting;
-@property (assign) BOOL isFinished;
+
+//@property (assign) BOOL isExecuting;
+//@property (nonatomic, assign) BOOL isFinished;
+
+@property (nonatomic, readwrite, getter=isExecuting) BOOL executing;
+@property (nonatomic, readwrite, getter=isFinished) BOOL finished;
 
 @end
 
 @implementation RCRTCOperation
 
-- (void)start {
-    [self prepare];
+@synthesize executing = _executing;
+@synthesize finished = _finished;
 
-    if ([self checkIsCancelled]) {
-        [self finishedAction];
-        return;
+- (void)dealloc {
+    NSLog(@"%@ op 正常释放...",self);
+}
+
+- (void)start {
+    if (self.command.executeType == RCRTCCommandExecuteType_sync) {
+        dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
     }
     
-    [self setIsExecuting:YES];
-    [self setIsFinished:NO];
+    @autoreleasepool {
+        [self prepare];
+
+        if ([self checkIsCancelled]) {
+            [self finishedAction];
+            return;
+        }
+        
+        self.executing = YES;
+        self.finished = NO;
+        
+        if (![self checkCommandStatus]) {
+            [self finishedAction];
+            return;
+        }
+        [self action];
+    };
     
-    if (![self checkCommandStatus]) {
-        [self finishedAction];
-        return;
-    }
-    
-    [self action];
 }
 
 - (void)action {
@@ -63,9 +80,12 @@
 }
 
 - (void)finishedAction {
-    [self setIsFinished:YES];
-    [self setIsExecuting:NO];
+    
+    self.executing = NO;
+    self.finished = YES;
+    
     NSLog(@"%@ --- 执行结束了",self);
+    
     [self messageToCommand];
 }
 
@@ -80,5 +100,38 @@
                           isContinue:self.isContinue];
 }
 
+//+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key {
+//    return YES;
+//}
+
+- (void)setExecuting:(BOOL)executing {
+    [self willChangeValueForKey:@"isExecuting"];
+    _executing = executing;
+    [self didChangeValueForKey:@"isExecuting"];
+}
+
+- (BOOL)isExecuting {
+    return _executing;
+}
+
+- (void)setFinished:(BOOL)finished {
+    if (_finished != finished) {
+        [self willChangeValueForKey:@"isFinished"];
+        _finished = finished;
+        [self didChangeValueForKey:@"isFinished"];
+    }
+}
+
+- (BOOL)isFinished {
+    return _finished;
+}
+
+- (BOOL)isAsynchronous {
+    return YES;
+}
+
+- (dispatch_semaphore_t)semaphore {
+    return self.command.semaphore;
+}
 
 @end

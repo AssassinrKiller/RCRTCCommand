@@ -13,9 +13,11 @@
 }
 
 - (void)action {
-    sleep(2);
-    NSLog(@"耗时操作 say Hi");
-    [self finishedAction];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        sleep(2);
+        NSLog(@"耗时操作 say Hi");
+        [self finishedAction];
+    });
 }
 
 - (NSString *)description {

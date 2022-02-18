@@ -8,11 +8,12 @@
 #import "RCRTCSayHelloOperation.h"
 
 @interface  RCRTCSayHelloOperation()
-
 @end
 
 @implementation RCRTCSayHelloOperation
-
+{
+    dispatch_semaphore_t _semaphore;
+}
 - (void)prepare {
     NSLog(@"say hello --- 开始执行");
 }
@@ -21,7 +22,6 @@
     dispatch_sync(dispatch_get_global_queue(0, 0), ^{
         sleep(2);
         NSLog(@"耗时操作 say hello");
-        self.response = @"xuhuan";
         self.isSuccess = NO;
         [self finishedAction];
     });

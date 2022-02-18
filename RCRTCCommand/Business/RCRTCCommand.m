@@ -29,6 +29,7 @@
 
 - (void)start {
     NSLog(@"cmd 开始执行");
+    self.semaphore = dispatch_semaphore_create(1);
     [self prepare];
 }
 
@@ -39,6 +40,9 @@
     self.isContinue = isContinue;
     if (response) {
         [self fetchOpResponse:response];
+    }
+    if (self.executeType == RCRTCCommandExecuteType_sync) {
+        dispatch_semaphore_signal(self.semaphore);
     }
 }
 

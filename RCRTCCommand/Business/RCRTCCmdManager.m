@@ -75,7 +75,7 @@
                         [op_i addDependency:op_j];
                     }
                 }
-                NSLog(@"op:%@ 的依赖:%@", op_i.name, op_i.dependencies);
+//                NSLog(@"op:%@ 的依赖:%@", op_i.name, op_i.dependencies);
             }
         }
             break;
@@ -98,10 +98,8 @@
         op.name = opName;
         op.command = cmd;
         op.queuePriority = (NSOperationQueuePriority)[cmd.sequenceDic[opName] integerValue];
-//        [op setCompletionBlock:^{
-//            NSLog(@"--- completion");
-//        }];
         [ops addObject:op];
+//        [cmd.childOperations setObject:op forKey:op.name];
     }
     
     if (!ops.count) return nil;

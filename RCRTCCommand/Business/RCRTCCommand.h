@@ -51,6 +51,7 @@ typedef NS_ENUM(NSInteger, RCRTCCommandExecuteType) {
 
 @property (nonatomic, readonly,  copy) NSDictionary *params;
 @property (nonatomic, readonly, assign) BOOL isContinue;
+@property (nonatomic, strong) dispatch_semaphore_t semaphore;
 
 @end
 
