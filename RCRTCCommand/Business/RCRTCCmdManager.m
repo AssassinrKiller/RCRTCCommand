@@ -38,7 +38,42 @@
     dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
     ops = [self fetchOperationInternal];
     [self setDependencyWithOps:ops];
+    [self fetchCmdSnapshot];
     dispatch_semaphore_signal(_semaphore);
+    return ops;
+}
+
+- (NSMutableArray<RCRTCOperation *> *)fetchOperationInternal {
+    RCRTCCommand *cmd = _head.next;
+    NSMutableArray<RCRTCOperation *> *ops = [NSMutableArray array];
+    for (NSString *opName in cmd.opNames) {
+        NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Operation",opName];
+        Class class = NSClassFromString(classStr);
+        if (!class) {
+            NSLog(@"未找到对应 operation 请检查相关 command");
+            continue;
+        }
+        RCRTCOperation *op = [class new];
+        op.name = opName;
+        op.command = cmd;
+        op.queuePriority = (NSOperationQueuePriority)[cmd.sequenceDic[opName] integerValue];
+        [ops addObject:op];
+    }
+    
+    if (!ops.count) return nil;
+    
+    if (ops.count == cmd.opNames.count) {
+        self.currentCmd = cmd;
+    }
+    
+    if (--_cmdCount == 0) {
+        _head.next = _tail;
+        _tail.prev = _head;
+    } else {
+        _head.next = cmd.next;
+        cmd.next.prev = _head;
+    }
+    
     return ops;
 }
 
@@ -54,11 +89,6 @@
                 }
                 lastOp = op;
             }
-        }
-            break;
-        case RCRTCCommandExecuteType_async:
-        {
-            // nothing to do
         }
             break;
         case RCRTCCommandExecuteType_custom:
@@ -84,40 +114,15 @@
     }
 }
 
-- (NSMutableArray<RCRTCOperation *> *)fetchOperationInternal {
-    RCRTCCommand *cmd = _head.next;
-    NSMutableArray<RCRTCOperation *> *ops = [NSMutableArray array];
-    for (NSString *opName in cmd.opNames) {
-        NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Operation",opName];
-        Class class = NSClassFromString(classStr);
-        if (!class) {
-            NSLog(@"未找到对应 operation 请检查相关 command");
-            continue;
-        }
-        RCRTCOperation *op = [class new];
-        op.name = opName;
-        op.command = cmd;
-        op.queuePriority = (NSOperationQueuePriority)[cmd.sequenceDic[opName] integerValue];
-        [ops addObject:op];
-//        [cmd.childOperations setObject:op forKey:op.name];
+- (void)fetchCmdSnapshot {
+    if (!self.currentCmd.isNeededSnapshot) {
+        return;
     }
-    
-    if (!ops.count) return nil;
-    
-    if (ops.count == cmd.opNames.count) {
-        self.currentCmd = cmd;
+    if ([self.delegate respondsToSelector:@selector(fetchSnapshot)]) {
+        self.currentCmd.snapshot = [self.delegate fetchSnapshot];
     }
-    
-    if (--_cmdCount == 0) {
-        _head.next = _tail;
-        _tail.prev = _head;
-    } else {
-        _head.next = cmd.next;
-        cmd.next.prev = _head;
-    }
-    
-    return ops;
 }
+
 
 - (void)push:(RCRTCCommand *)command {
     dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);

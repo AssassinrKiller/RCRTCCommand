@@ -6,6 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RCRTCDataSnapshot.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, RCRTCCommandExecuteType) {
@@ -20,8 +22,9 @@ typedef NS_ENUM(NSInteger, RCRTCCommandExecuteType) {
 - (void)prepare;
 
 /// 当子任务执行结束当前 command 收到回调
+/// @param opName 对应的 op 名称
 /// @param response op 执行需要传递给到 cmd 的结果
-- (void)fetchOpResponse:(id)response;
+- (void)fetchOpName:(NSString *)opName response:(id)response;
 
 /// 所有的子任务都执行完成回调
 - (void)finished;
@@ -31,6 +34,9 @@ typedef NS_ENUM(NSInteger, RCRTCCommandExecuteType) {
 
 /// command 包含的 operation 执行方式, 默认是 RCRTCCommandExecuteType_sync
 - (RCRTCCommandExecuteType)executeType;
+
+/// 是否需要数据快照
+- (BOOL)isNeededSnapshot;
 
 @optional;
 /*
@@ -49,9 +55,9 @@ typedef NS_ENUM(NSInteger, RCRTCCommandExecuteType) {
 @property (nonatomic,   weak) RCRTCCommand *prev;
 @property (nonatomic, strong) RCRTCCommand *next;
 
+@property (nonatomic, strong) id<RCRTCDataSnapshotInterface> snapshot;
 @property (nonatomic, readonly,  copy) NSDictionary *params;
 @property (nonatomic, readonly, assign) BOOL isContinue;
-@property (nonatomic, strong) dispatch_semaphore_t semaphore;
 
 @end
 

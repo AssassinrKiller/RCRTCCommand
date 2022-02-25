@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RCRTCDataSnapshot.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,6 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 检查还有未结束的 cmd
 + (void)checkCommandFinished;
+
+/// 设置代理
+/// @param delegate delegate
++ (void)setServiceDelegate:(id<RCRTCCmdServiceDelegate>)delegate;
 
 @end
 

@@ -15,6 +15,7 @@
 
 - (void)action {
     NSLog(@"end 请求操作");
+    sleep(5);
     [self finishedAction];
 }
 

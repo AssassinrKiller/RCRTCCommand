@@ -16,12 +16,12 @@
 @implementation RCRTCIntroCommand
 
 - (RCRTCCommandExecuteType)executeType {
-    return RCRTCCommandExecuteType_sync;
+    return RCRTCCommandExecuteType_custom;
 }
 
 - (NSDictionary<NSString *,NSNumber *> *)sequenceDic {
     return @{@"SayHello":@(NSOperationQueuePriorityHigh),
-             @"SayHi":@(NSOperationQueuePriorityHigh),
+             @"SayHi":@(NSOperationQueuePriorityNormal),
              @"End":@(NSOperationQueuePriorityNormal)};
 }
 
@@ -29,12 +29,16 @@
     return @[@"SayHello",@"SayHi",@"End"];
 }
 
+- (BOOL)isNeededSnapshot {
+    return YES;
+}
+
 - (void)prepare {
     self.callback = self.params[@"callback"];
 }
 
-- (void)fetchOpResponse:(id)response {
-    NSLog(@"response:%@",response);
+- (void)fetchOpName:(NSString *)opName response:(id)response {
+    NSLog(@"%@ => response:%@", opName, response);
 }
 
 - (void)finished {

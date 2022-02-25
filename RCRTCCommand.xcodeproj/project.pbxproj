@@ -26,6 +26,7 @@
 		994BAF1C279FAB820020924C /* RCRTCOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 994BAF15279FAB820020924C /* RCRTCOperation.m */; };
 		994BAF1D279FAB820020924C /* RCRTCCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 994BAF16279FAB820020924C /* RCRTCCommand.m */; };
 		994BAF1E279FAB820020924C /* RCRTCCmdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 994BAF17279FAB820020924C /* RCRTCCmdManager.m */; };
+		99D51AD927C8B9D8007D6AA4 /* RCRTCDataSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 99D51AD827C8B9D8007D6AA4 /* RCRTCDataSnapshot.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,8 @@
 		994BAF15279FAB820020924C /* RCRTCOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRTCOperation.m; sourceTree = "<group>"; };
 		994BAF16279FAB820020924C /* RCRTCCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRTCCommand.m; sourceTree = "<group>"; };
 		994BAF17279FAB820020924C /* RCRTCCmdManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRTCCmdManager.m; sourceTree = "<group>"; };
+		99D51AD727C8B9D8007D6AA4 /* RCRTCDataSnapshot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCRTCDataSnapshot.h; sourceTree = "<group>"; };
+		99D51AD827C8B9D8007D6AA4 /* RCRTCDataSnapshot.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCRTCDataSnapshot.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +195,8 @@
 				9932C94027B51A53008D66F4 /* RCRTCCommand+private.h */,
 				994BAF0B279FAB820020924C /* RCRTCOperation.h */,
 				994BAF15279FAB820020924C /* RCRTCOperation.m */,
+				99D51AD727C8B9D8007D6AA4 /* RCRTCDataSnapshot.h */,
+				99D51AD827C8B9D8007D6AA4 /* RCRTCDataSnapshot.m */,
 				9932C91527A2AAA8008D66F4 /* Commands */,
 				994BAF0D279FAB820020924C /* Operations */,
 			);
@@ -356,6 +361,7 @@
 				9932C92727B3AFB4008D66F4 /* RCRTCJoinRoomCommand.m in Sources */,
 				994BAF1A279FAB820020924C /* RCRTCSayHelloOperation.m in Sources */,
 				994BAEA7279FA01B0020924C /* SceneDelegate.m in Sources */,
+				99D51AD927C8B9D8007D6AA4 /* RCRTCDataSnapshot.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

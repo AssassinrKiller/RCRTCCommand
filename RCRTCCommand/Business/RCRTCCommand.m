@@ -29,7 +29,6 @@
 
 - (void)start {
     NSLog(@"cmd 开始执行");
-    self.semaphore = dispatch_semaphore_create(1);
     [self prepare];
 }
 
@@ -39,10 +38,7 @@
     NSLog(@"当前 command 子任务 %@ 结束, 是否继续执行:%@", opName, @(isContinue));
     self.isContinue = isContinue;
     if (response) {
-        [self fetchOpResponse:response];
-    }
-    if (self.executeType == RCRTCCommandExecuteType_sync) {
-        dispatch_semaphore_signal(self.semaphore);
+        [self fetchOpName:opName response:response];
     }
 }
 
@@ -56,7 +52,7 @@
     
 }
 
-- (void)fetchOpResponse:(id)response {
+- (void)fetchOpName:(NSString *)opName response:(id)response {
     
 }
 
@@ -76,5 +72,17 @@
     return nil;
 }
 
+- (BOOL)isNeededSnapshot {
+    return YES;
+}
+
+#pragma mark - private
+- (void)setIsContinue:(BOOL)isContinue {
+    @synchronized (self) {
+        //假设 2个 op 并发, 只要有一个 op 失败, cmd 的 isContinue = NO
+        if (!_isContinue) return;
+        _isContinue = isContinue;
+    };
+}
 
 @end

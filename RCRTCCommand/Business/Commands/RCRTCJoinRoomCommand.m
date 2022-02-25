@@ -17,7 +17,7 @@
     
 }
 
-- (void)fetchOpResponse:(id)response {
+- (void)fetchOpName:(NSString *)opName response:(id)response{
     
 }
 

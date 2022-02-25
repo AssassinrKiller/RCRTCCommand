@@ -25,10 +25,6 @@
 }
 
 - (void)start {
-    if (self.command.executeType == RCRTCCommandExecuteType_sync) {
-        dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
-    }
-    
     @autoreleasepool {
         [self prepare];
 
@@ -46,7 +42,6 @@
         }
         [self action];
     };
-    
 }
 
 - (void)action {
@@ -76,10 +71,10 @@
 }
 
 - (void)finishedAction {
-    self.executing = NO;
-    self.finished = YES;
-    NSLog(@"%@ --- 执行结束了",self);
     [self messageToCommand];
+    self.executing = NO;
+    NSLog(@"%@ --- 执行结束了",self);
+    self.finished = YES;
 }
 
 - (void)setIsSuccess:(BOOL)isSuccess {
@@ -97,32 +92,9 @@
     return YES;
 }
 
-//- (void)setExecuting:(BOOL)executing {
-//    [self willChangeValueForKey:@"isExecuting"];
-//    _executing = executing;
-//    [self didChangeValueForKey:@"isExecuting"];
-//}
-//
-//- (BOOL)isExecuting {
-//    return _executing;
-//}
-//
-//- (void)setFinished:(BOOL)finished {
-//    [self willChangeValueForKey:@"isFinished"];
-//    _finished = finished;
-//    [self didChangeValueForKey:@"isFinished"];
-//}
-//
-//- (BOOL)isFinished {
-//    return _finished;
-//}
-
 - (BOOL)isAsynchronous {
     return YES;
 }
 
-- (dispatch_semaphore_t)semaphore {
-    return self.command.semaphore;
-}
 
 @end

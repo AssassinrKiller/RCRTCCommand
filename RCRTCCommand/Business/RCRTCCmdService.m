@@ -98,4 +98,8 @@
     [[RCRTCCmdService shareInstance] addCommand:cmd];
 }
 
++ (void)setServiceDelegate:(id<RCRTCCmdServiceDelegate>)delegate {
+    [RCRTCCmdService shareInstance].manager.delegate = delegate;
+}
+
 @end
