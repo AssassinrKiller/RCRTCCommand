@@ -10,17 +10,17 @@
 @implementation RCRTCEndOperation
 
 - (void)prepare {
-    NSLog(@"end --- 开始执行");
+//    NSLog(@"end --- 开始执行");
 }
 
 - (void)action {
-    NSLog(@"end 请求操作");
+//    NSLog(@"end 请求操作");
     sleep(5);
     [self finishedAction];
 }
 
 - (NSString *)description{
-    return @"end";
+    return @"end ";
 }
 
 @end

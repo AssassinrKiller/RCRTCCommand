@@ -13,13 +13,13 @@
 @implementation RCRTCSayHelloOperation
 
 - (void)prepare {
-    NSLog(@"say hello --- 开始执行");
+//    NSLog(@"say hello --- 开始执行");
 }
 
 - (void)action {
     dispatch_sync(dispatch_get_global_queue(0, 0), ^{
         sleep(3);
-        NSLog(@"耗时操作 say hello");
+//        NSLog(@"耗时操作 say hello");
         self.isSuccess = YES;
         [self finishedAction];
     });

@@ -40,7 +40,7 @@
     if (self = [super init]) {
         _runQueue = [NSOperationQueue new];
         _manager = [RCRTCCmdManager new];
-        _fetchQueue = dispatch_queue_create("fetchCmd.queue", DISPATCH_QUEUE_SERIAL);
+        _fetchQueue = dispatch_queue_create("fetchCommand.queue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -55,7 +55,7 @@
     dispatch_async(_fetchQueue, ^{
         __strong typeof(weakSelf)strongSelf = weakSelf;
         if (strongSelf.runQueue.operationCount) {
-            NSLog(@"正在执行当前 command");
+            NSLog(@"current command executing, operations:%@",strongSelf.runQueue.operations);
             return;
         }
         [strongSelf fetchOperations];
@@ -77,7 +77,7 @@
         [strongSelf.manager.currentCmd completion];
         [strongSelf tryToFetch];//执行下一个 cmd
     }];
-    NSLog(@"currentQueueCount:%@",@(self.runQueue.operationCount));
+    NSLog(@"fetchOperations count:%@",@(self.runQueue.operationCount));
 }
 
 + (void)commandWithCmdName:(NSString *)cmdName
@@ -90,11 +90,10 @@
     NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Command",cmdName];
     Class cmdClass = NSClassFromString(classStr);
     if (!cmdClass) {
-        NSLog(@"cmd is not exist");
+        NSLog(@"command is not exist, please check it");
         return;
     }
     RCRTCCommand *cmd = [[cmdClass alloc] initWithParams:params];
-    [cmd start];
     [[RCRTCCmdService shareInstance] addCommand:cmd];
 }
 

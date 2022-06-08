@@ -16,7 +16,7 @@
 @implementation RCRTCIntroCommand
 
 - (RCRTCCommandExecuteType)executeType {
-    return RCRTCCommandExecuteType_custom;
+    return RCRTCCommandExecuteType_sync;
 }
 
 - (NSDictionary<NSString *,NSNumber *> *)sequenceDic {
@@ -48,7 +48,7 @@
 }
 
 - (NSString *)description {
-    return @"intro cmd";
+    return @"intro command";
 }
 
 @end

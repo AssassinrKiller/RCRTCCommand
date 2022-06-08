@@ -23,19 +23,20 @@
     if (self = [super init]) {
         self.params = params;
         self.isContinue = YES;
+        [self prepareToExecute];
     }
     return self;
 }
 
-- (void)start {
-    NSLog(@"cmd 开始执行");
+- (void)prepareToExecute {
+    NSLog(@"%@ prepare", self);
     [self prepare];
 }
 
 - (void)finishedWithOpName:(NSString *)opName
                   response:(id)response
                 isContinue:(BOOL)isContinue {
-    NSLog(@"当前 command 子任务 %@ 结束, 是否继续执行:%@", opName, @(isContinue));
+    NSLog(@"%@ child operation:[%@] is finished, to be continue:%@", self, opName, @(isContinue));
     self.isContinue = isContinue;
     if (response) {
         [self fetchOpName:opName response:response];
@@ -43,13 +44,13 @@
 }
 
 - (void)completion {
-    NSLog(@"cmd completion");
+    NSLog(@"%@ completion", self);
     [self finished];
 }
 
 #pragma mark - RCRTCCommandInterface
 - (void)prepare {
-    
+    NSLog(@"%@ prepare", self);
 }
 
 - (void)fetchOpName:(NSString *)opName response:(id)response {
@@ -79,8 +80,6 @@
 #pragma mark - private
 - (void)setIsContinue:(BOOL)isContinue {
     @synchronized (self) {
-        //假设 2个 op 并发, 只要有一个 op 失败, cmd 的 isContinue = NO
-        if (!_isContinue) return;
         _isContinue = isContinue;
     };
 }

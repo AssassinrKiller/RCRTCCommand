@@ -21,11 +21,12 @@
 @synthesize finished = _finished;
 
 - (void)dealloc {
-    NSLog(@"%@ op 正常释放...",self);
+    NSLog(@"%@ operation dealloc", self);
 }
 
 - (void)start {
     @autoreleasepool {
+        NSLog(@"%@ operation start", self);
         [self prepare];
 
         if ([self checkIsCancelled]) {
@@ -73,7 +74,7 @@
 - (void)finishedAction {
     [self messageToCommand];
     self.executing = NO;
-    NSLog(@"%@ --- 执行结束了",self);
+    NSLog(@"%@ operation finished", self);
     self.finished = YES;
 }
 

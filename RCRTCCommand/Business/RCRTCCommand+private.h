@@ -13,8 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithParams:(NSDictionary *)params;
 
-- (void)start;
-
 - (void)finishedWithOpName:(NSString *)opName
                   response:(__nullable id)response
                 isContinue:(BOOL)isContinue;
