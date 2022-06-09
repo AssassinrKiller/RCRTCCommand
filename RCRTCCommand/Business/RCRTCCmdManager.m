@@ -50,7 +50,7 @@
         NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Operation",opName];
         Class class = NSClassFromString(classStr);
         if (!class) {
-            NSLog(@"未找到对应 operation 请检查相关 command");
+            NSLog(@"undefined operation, please check it");
             continue;
         }
         RCRTCOperation *op = [class new];
@@ -74,13 +74,17 @@
         cmd.next.prev = _head;
     }
     
+    if (cmd.status == RCRTCCommandStatus_Discard) {
+        NSLog(@"currentCommand:%@ invalid, should be discard", cmd.cmdName);
+        return [self fetchOperationInternal];
+    }
     return ops;
 }
 
 - (void)setDependencyWithOps:(NSArray *)ops{
     RCRTCCommandExecuteType executeType = self.currentCmd.executeType;
     switch (executeType) {
-        case RCRTCCommandExecuteType_sync:
+        case RCRTCCommandExecuteType_Sync:
         {
             RCRTCOperation *lastOp = nil;
             for (RCRTCOperation *op in ops) {
@@ -91,7 +95,7 @@
             }
         }
             break;
-        case RCRTCCommandExecuteType_custom:
+        case RCRTCCommandExecuteType_Custom:
         {
             //需要添加复杂的依赖关系 queuePriority 只能决定开始的顺序, addDependency 才能决定结束的顺序
             for (NSInteger i = 0; i < ops.count; i++) {
@@ -127,6 +131,8 @@
 - (void)push:(RCRTCCommand *)command {
     dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
     
+    [self optimizeWithCommand:command];
+    
     RCRTCCommand *last = _tail.prev;
     _tail.prev = command;
     command.next = _tail;
@@ -136,6 +142,18 @@
     ++_cmdCount;
     
     dispatch_semaphore_signal(_semaphore);
+}
+
+- (void)optimizeWithCommand:(RCRTCCommand *)command {
+    if ([self.delegate respondsToSelector:@selector(willPushCommand:inQueue:)]) {
+        NSMutableArray *queue = [NSMutableArray array];
+        RCRTCCommand *current = _head.next;
+        while (current != _tail) {
+            [queue addObject:current];
+            current = current.next;
+        }
+        [self.delegate willPushCommand:command inQueue:queue];
+    }
 }
 
 @end

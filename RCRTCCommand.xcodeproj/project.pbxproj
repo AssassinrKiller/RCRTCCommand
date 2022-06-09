@@ -26,6 +26,8 @@
 		994BAF1C279FAB820020924C /* RCRTCOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 994BAF15279FAB820020924C /* RCRTCOperation.m */; };
 		994BAF1D279FAB820020924C /* RCRTCCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 994BAF16279FAB820020924C /* RCRTCCommand.m */; };
 		994BAF1E279FAB820020924C /* RCRTCCmdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 994BAF17279FAB820020924C /* RCRTCCmdManager.m */; };
+		9959B5152851D34F007A38A7 /* RCRTCLeaveRoomCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 9959B5142851D34F007A38A7 /* RCRTCLeaveRoomCommand.m */; };
+		9959B5182851D387007A38A7 /* RCRTCLeaveRoomOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9959B5172851D387007A38A7 /* RCRTCLeaveRoomOperation.m */; };
 		99D51AD927C8B9D8007D6AA4 /* RCRTCDataSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 99D51AD827C8B9D8007D6AA4 /* RCRTCDataSnapshot.m */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +88,10 @@
 		994BAF15279FAB820020924C /* RCRTCOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRTCOperation.m; sourceTree = "<group>"; };
 		994BAF16279FAB820020924C /* RCRTCCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRTCCommand.m; sourceTree = "<group>"; };
 		994BAF17279FAB820020924C /* RCRTCCmdManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRTCCmdManager.m; sourceTree = "<group>"; };
+		9959B5132851D34F007A38A7 /* RCRTCLeaveRoomCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCRTCLeaveRoomCommand.h; sourceTree = "<group>"; };
+		9959B5142851D34F007A38A7 /* RCRTCLeaveRoomCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCRTCLeaveRoomCommand.m; sourceTree = "<group>"; };
+		9959B5162851D387007A38A7 /* RCRTCLeaveRoomOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCRTCLeaveRoomOperation.h; sourceTree = "<group>"; };
+		9959B5172851D387007A38A7 /* RCRTCLeaveRoomOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCRTCLeaveRoomOperation.m; sourceTree = "<group>"; };
 		99D51AD727C8B9D8007D6AA4 /* RCRTCDataSnapshot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCRTCDataSnapshot.h; sourceTree = "<group>"; };
 		99D51AD827C8B9D8007D6AA4 /* RCRTCDataSnapshot.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCRTCDataSnapshot.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +128,8 @@
 				9932C91727A2AAE2008D66F4 /* RCRTCIntroCommand.m */,
 				9932C92527B3AFB4008D66F4 /* RCRTCJoinRoomCommand.h */,
 				9932C92627B3AFB4008D66F4 /* RCRTCJoinRoomCommand.m */,
+				9959B5132851D34F007A38A7 /* RCRTCLeaveRoomCommand.h */,
+				9959B5142851D34F007A38A7 /* RCRTCLeaveRoomCommand.m */,
 			);
 			path = Commands;
 			sourceTree = "<group>";
@@ -214,6 +222,8 @@
 				994BAF10279FAB820020924C /* RCRTCEndOperation.m */,
 				9932C91F27B3AF94008D66F4 /* RCRTCJoinRoomOperation.h */,
 				9932C92027B3AF94008D66F4 /* RCRTCJoinRoomOperation.m */,
+				9959B5162851D387007A38A7 /* RCRTCLeaveRoomOperation.h */,
+				9959B5172851D387007A38A7 /* RCRTCLeaveRoomOperation.m */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -356,11 +366,13 @@
 				994BAF1D279FAB820020924C /* RCRTCCommand.m in Sources */,
 				994BAF1C279FAB820020924C /* RCRTCOperation.m in Sources */,
 				9932C91827A2AAE2008D66F4 /* RCRTCIntroCommand.m in Sources */,
+				9959B5152851D34F007A38A7 /* RCRTCLeaveRoomCommand.m in Sources */,
 				994BAF1E279FAB820020924C /* RCRTCCmdManager.m in Sources */,
 				994BAF18279FAB820020924C /* RCRTCSayHiOperation.m in Sources */,
 				9932C92727B3AFB4008D66F4 /* RCRTCJoinRoomCommand.m in Sources */,
 				994BAF1A279FAB820020924C /* RCRTCSayHelloOperation.m in Sources */,
 				994BAEA7279FA01B0020924C /* SceneDelegate.m in Sources */,
+				9959B5182851D387007A38A7 /* RCRTCLeaveRoomOperation.m in Sources */,
 				99D51AD927C8B9D8007D6AA4 /* RCRTCDataSnapshot.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

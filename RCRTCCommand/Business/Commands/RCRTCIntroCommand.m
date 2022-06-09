@@ -9,14 +9,14 @@
 
 @interface RCRTCIntroCommand ()
 
-@property (nonatomic, copy)void(^callback)(BOOL isSuccess, NSInteger code);
+@property (nonatomic, copy)void(^callback)(BOOL isSuccess, NSInteger code, id response);
 
 @end
 
 @implementation RCRTCIntroCommand
 
 - (RCRTCCommandExecuteType)executeType {
-    return RCRTCCommandExecuteType_sync;
+    return RCRTCCommandExecuteType_Sync;
 }
 
 - (NSDictionary<NSString *,NSNumber *> *)sequenceDic {
@@ -43,12 +43,12 @@
 
 - (void)finished {
     if (self.callback) {
-        self.callback(YES, 0);
+        self.callback(YES, 0, nil);
     }    
 }
 
-- (NSString *)description {
-    return @"intro command";
+- (NSString *)cmdName {
+    return @"Intro command";
 }
 
 @end

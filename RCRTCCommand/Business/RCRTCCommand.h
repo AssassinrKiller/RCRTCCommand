@@ -11,9 +11,15 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, RCRTCCommandExecuteType) {
-    RCRTCCommandExecuteType_sync   = 0,  //依次执行前后依赖
-    RCRTCCommandExecuteType_async  = 1,  //并发执行, 都执行完通知
-    RCRTCCommandExecuteType_custom = 2   //自定义执行顺序
+    RCRTCCommandExecuteType_Sync   = 0,  //依次执行前后依赖
+    RCRTCCommandExecuteType_Async  = 1,  //并发执行, 都执行完通知
+    RCRTCCommandExecuteType_Custom = 2   //自定义执行顺序
+};
+
+typedef NS_ENUM(NSInteger, RCRTCCommandStatus) {
+    RCRTCCommandStatus_Normal   = 0,   //正常需要执行的
+    RCRTCCommandStatus_Invaild  = 1,   //以失败执行结束
+    RCRTCCommandStatus_Discard  = 2    //未执行,可以丢弃
 };
 
 @protocol  RCRTCCommandInterface <NSObject>
@@ -55,8 +61,10 @@ typedef NS_ENUM(NSInteger, RCRTCCommandExecuteType) {
 @property (nonatomic,   weak) RCRTCCommand *prev;
 @property (nonatomic, strong) RCRTCCommand *next;
 
+@property (nonatomic,   copy) NSString *cmdName;
+@property (nonatomic, assign) RCRTCCommandStatus status;
 @property (nonatomic, strong) id<RCRTCDataSnapshotInterface> snapshot;
-@property (nonatomic, readonly,  copy) NSDictionary *params;
+@property (nonatomic, readonly,   copy) NSDictionary *params;
 @property (nonatomic, readonly, assign) BOOL isContinue;
 
 @end

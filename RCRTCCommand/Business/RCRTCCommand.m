@@ -29,14 +29,14 @@
 }
 
 - (void)prepareToExecute {
-    NSLog(@"%@ prepare", self);
+    NSLog(@"%@ prepare", self.cmdName);
     [self prepare];
 }
 
 - (void)finishedWithOpName:(NSString *)opName
                   response:(id)response
                 isContinue:(BOOL)isContinue {
-    NSLog(@"%@ child operation:[%@] is finished, to be continue:%@", self, opName, @(isContinue));
+    NSLog(@"%@ child operation:[%@] is finished, to be continue:%@", self.cmdName, opName, @(isContinue));
     self.isContinue = isContinue;
     if (response) {
         [self fetchOpName:opName response:response];
@@ -44,13 +44,13 @@
 }
 
 - (void)completion {
-    NSLog(@"%@ completion", self);
+    NSLog(@"%@ completion", self.cmdName);
     [self finished];
 }
 
 #pragma mark - RCRTCCommandInterface
 - (void)prepare {
-    NSLog(@"%@ prepare", self);
+    
 }
 
 - (void)fetchOpName:(NSString *)opName response:(id)response {
@@ -66,7 +66,7 @@
 }
 
 - (RCRTCCommandExecuteType)executeType {
-    return RCRTCCommandExecuteType_sync;
+    return RCRTCCommandExecuteType_Sync;
 }
 
 - (NSDictionary<NSString *,NSNumber *> *)sequenceDic {
@@ -82,6 +82,26 @@
     @synchronized (self) {
         _isContinue = isContinue;
     };
+}
+
+
+- (NSString *)description {
+    NSString *status = @"";
+    switch (self.status) {
+        case RCRTCCommandStatus_Normal:
+            status = @"Normal status";
+            break;
+        case RCRTCCommandStatus_Invaild:
+            status = @"Invaild status";
+            break;
+        case RCRTCCommandStatus_Discard:
+            status = @"Discard status";
+            break;
+        default:
+            break;
+    }
+    return [NSString stringWithFormat:@"%@:%p ,%@ ,params:%@, ops:%@",
+            self.cmdName ,self, status, self.params, self.opNames];
 }
 
 @end

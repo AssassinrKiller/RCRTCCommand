@@ -81,9 +81,9 @@
 }
 
 + (void)commandWithCmdName:(NSString *)cmdName
-                    params:(NSDictionary *)params
-                completion:(id)completion {
-    NSMutableDictionary *opParams = [params mutableCopy];
+                    params:(NSDictionary * _Nullable)params
+                completion:(RCRTCCommandCompletion _Nullable)completion {
+    NSMutableDictionary *opParams = params ? [params mutableCopy] : @{}.mutableCopy;
     if (completion) {
         opParams[@"callback"] = completion;
     }

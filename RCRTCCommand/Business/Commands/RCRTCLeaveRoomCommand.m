@@ -1,16 +1,16 @@
 //
-//  RCRTCJoinRoomCommand.m
+//  RCRTCLeaveRoomCommand.m
 //  RCRTCCommand
 //
-//  Created by huan xu on 2022/2/9.
+//  Created by huan xu on 2022/6/9.
 //
 
-#import "RCRTCJoinRoomCommand.h"
+#import "RCRTCLeaveRoomCommand.h"
 
-@implementation RCRTCJoinRoomCommand
+@implementation RCRTCLeaveRoomCommand
 
 - (NSArray *)opNames {
-    return @[@"JoinRoom"];
+    return @[@"LeaveRoom"];
 }
 
 - (void)prepare {
@@ -26,7 +26,7 @@
 }
 
 - (NSString *)cmdName {
-    return @"joinRoom command";
+    return @"leaveRoom command";
 }
 
 @end

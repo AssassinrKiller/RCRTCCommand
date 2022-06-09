@@ -10,6 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void (^RCRTCCommandCompletion)(BOOL isSuccess,
+                                      NSInteger code,
+                                      id _Nullable response);
+
 @interface RCRTCCmdService : NSObject
 
 /// 开始执行 command
@@ -17,8 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param params 执行过程中需要的参数
 /// @param completion 执行结束的回调
 + (void)commandWithCmdName:(NSString *)cmdName
-                    params:(NSDictionary *)params
-                completion:(id)completion;
+                    params:(NSDictionary * _Nullable)params
+                completion:(RCRTCCommandCompletion _Nullable)completion;
 
 /// 取消当前所有的 cmd
 + (void)cancelCurrentCmd;
@@ -29,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 设置代理
 /// @param delegate delegate
 + (void)setServiceDelegate:(id<RCRTCCmdServiceDelegate>)delegate;
+
+
 
 @end
 
