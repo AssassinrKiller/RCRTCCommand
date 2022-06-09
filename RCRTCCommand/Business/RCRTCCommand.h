@@ -67,6 +67,7 @@ typedef NS_ENUM(NSInteger, RCRTCCommandStatus) {
 @property (nonatomic, assign) NSInteger code;
 @property (nonatomic, strong) id<RCRTCDataSnapshotInterface> snapshot;
 @property (nonatomic, readonly,   copy) NSDictionary *params;
+@property (nonatomic, readonly,   copy) void(^processing)(void);
 @property (nonatomic, readonly,   copy) RCRTCCommandCompletion completion;
 @property (nonatomic, readonly, assign) BOOL isContinue;
 

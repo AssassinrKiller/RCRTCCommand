@@ -15,12 +15,17 @@ typedef void (^RCRTCCommandCompletion)(BOOL isSuccess, NSInteger code, id _Nulla
 @interface RCRTCCmdService : NSObject
 
 /// 开始执行 command
-/// @param cmdName 自定义 cmd 名称
+/// @param cmdClass 自定义 command class
 /// @param params 执行过程中需要的参数
 /// @param completion 执行结束的回调
-+ (void)commandWithCmdName:(NSString *)cmdName
-                    params:(nullable NSDictionary *)params
-                completion:(nullable RCRTCCommandCompletion)completion;
++ (void)commandWithClass:(Class)cmdClass
+                  params:(nullable NSDictionary *)params
+              completion:(nullable RCRTCCommandCompletion)completion;
+
++ (void)commandWithClass:(Class)cmdClass
+                  params:(nullable NSDictionary *)params
+              processing:(nullable void(^)(void))processing
+              completion:(nullable RCRTCCommandCompletion)completion;
 
 /// 取消当前所有的 cmd
 + (void)cancelCurrentCmd;

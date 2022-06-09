@@ -11,6 +11,7 @@
 @interface RCRTCCommand ()
 @property (nonatomic, copy) NSDictionary *params;
 @property (nullable, nonatomic, copy) RCRTCCommandCompletion completion;
+@property (nullable, nonatomic, copy) void(^processing)(void);
 @property (nonatomic,   weak) RCRTCCommand *prev;
 @property (nonatomic, strong) RCRTCCommand *next;
 @end
@@ -26,9 +27,11 @@
 }
 
 - (instancetype)initWithParams:(NSDictionary *)params
+                    processing:(void(^)(void))processing
                     completion:(RCRTCCommandCompletion)completion {
     if (self = [super init]) {
         self.params = params;
+        self.processing = processing;
         self.completion = completion;
         self.isContinue = YES;
         [self prepareToExecute];
@@ -122,6 +125,10 @@
 
 - (RCRTCCommandCompletion)completion {
     return _completion;
+}
+
+- (void (^)(void))processing {
+    return _processing;
 }
 
 @end

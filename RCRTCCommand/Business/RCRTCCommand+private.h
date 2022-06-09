@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) RCRTCCommand *next;
 
 - (instancetype)initWithParams:(NSDictionary *)params
+                    processing:(void(^)(void))processing
                     completion:(RCRTCCommandCompletion)completion;
 
 - (void)finishedWithOpName:(NSString *)opName

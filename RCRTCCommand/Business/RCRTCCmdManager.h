@@ -14,13 +14,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RCRTCCmdManager : NSObject
 
+@property (nonatomic, readonly, weak)RCRTCCommand *currentCmd;
+@property (nonatomic, weak) id<RCRTCCmdServiceDelegate> delegate;
+
 - (void)push:(RCRTCCommand *)command;
 
 - (NSArray<RCRTCOperation *> *)fetchOperations;
 
-@property (nonatomic, readonly, weak)RCRTCCommand *currentCmd;
-
-@property (nonatomic, weak) id<RCRTCCmdServiceDelegate> delegate;
+- (void)showAllCommands;
 
 @end
 

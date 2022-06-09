@@ -48,7 +48,7 @@
     NSMutableArray<RCRTCOperation *> *ops = [NSMutableArray array];
     
     if (cmd.status == RCRTCCommandStatus_Discard) {
-        NSLog(@"currentCommand:%@ pending, should be discard", cmd.cmdName);
+        NSLog(@"pendingCommand:%@, should be discard", cmd.cmdName);
         [self sortWithCommand:cmd];
         return [self fetchOperationInternal];
     }
@@ -87,7 +87,6 @@
         cmd.next.prev = _head;
     }
 }
-
 
 - (void)setDependencyWithOps:(NSArray *)ops{
     RCRTCCommandExecuteType executeType = self.currentCmd.executeType;
@@ -161,6 +160,15 @@
             current = current.next;
         }
         [self.delegate willPushCommand:command inQueue:queue];
+    }
+}
+
+- (void)showAllCommands {
+    NSLog(@"pendingCommandCount:%@", @(_cmdCount));
+    RCRTCCommand *current = _head.next;
+    while (current != _tail) {
+        NSLog(@"pendingCommand:%@", current);
+        current = current.next;
     }
 }
 

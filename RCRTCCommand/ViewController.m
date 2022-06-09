@@ -7,6 +7,8 @@
 
 #import "ViewController.h"
 #import "RCRTCCmdService.h"
+#import "RCRTCIntroCommand.h"
+#import "RCRTCJoinRoomCommand.h"
 #import "RCRTCLeaveRoomCommand.h"
 
 @interface ViewController ()<RCRTCCmdServiceDelegate>
@@ -21,19 +23,21 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [RCRTCCmdService commandWithCmdName:@"Intro" params:@{@"name":@"xuhuan"} completion:^(BOOL isSuccess, NSInteger code, id  _Nullable response) {
+    [RCRTCCmdService commandWithClass:RCRTCIntroCommand.class
+                               params:@{@"name":@"xuhuan"}
+                           completion:^(BOOL isSuccess, NSInteger code, id  _Nullable response) {
         NSLog(@"isSuccess:%@ --- response:%@",isSuccess ? @"成功" : @"失败", response);
     }];
     
-    [RCRTCCmdService commandWithCmdName:@"JoinRoom"
+    [RCRTCCmdService commandWithClass:RCRTCJoinRoomCommand.class
                                  params:@{@"roomId":@"333"}
                              completion:nil];
     
-    [RCRTCCmdService commandWithCmdName:@"JoinRoom"
+    [RCRTCCmdService commandWithClass:RCRTCJoinRoomCommand.class
                                  params:@{@"roomId":@"333"}
                              completion:nil];
     
-    [RCRTCCmdService commandWithCmdName:@"LeaveRoom"
+    [RCRTCCmdService commandWithClass:RCRTCLeaveRoomCommand.class
                                  params:@{@"roomId":@"333"}
                              completion:nil];
 }

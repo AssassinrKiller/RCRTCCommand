@@ -63,6 +63,9 @@
 }
 
 - (void)fetchOperations {
+#if DEBUG
+    [_manager showAllCommands];
+#endif
     NSArray *ops = [_manager fetchOperations];
     
     for (NSOperation *op in ops) {
@@ -75,21 +78,23 @@
     [self.runQueue addBarrierBlock:^{
         __strong typeof(weakSelf)strongSelf = weakSelf;
         [strongSelf.manager.currentCmd commandFinished];
-        [strongSelf tryToFetch];//执行下一个 cmd
+        [strongSelf tryToFetch];
     }];
-    NSLog(@"fetchOperations count:%@",@(self.runQueue.operationCount));
 }
 
-+ (void)commandWithCmdName:(NSString *)cmdName
-                    params:(nullable NSDictionary *)params
-                completion:(nullable RCRTCCommandCompletion)completion {
-    NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Command",cmdName];
-    Class cmdClass = NSClassFromString(classStr);
-    if (!cmdClass) {
-        NSLog(@"command is not exist, please check it");
-        return;
-    }
-    RCRTCCommand *cmd = [[cmdClass alloc] initWithParams:params.mutableCopy completion:completion];
++ (void)commandWithClass:(Class)cmdClass
+                  params:(nullable NSDictionary *)params
+              completion:(nullable RCRTCCommandCompletion)completion {
+    [self commandWithClass:cmdClass params:params processing:nil completion:completion];
+}
+
++ (void)commandWithClass:(Class)cmdClass
+                  params:(nullable NSDictionary *)params
+              processing:(nullable void(^)(void))processing
+              completion:(nullable RCRTCCommandCompletion)completion {
+    RCRTCCommand *cmd = [[cmdClass alloc] initWithParams:params.mutableCopy
+                                              processing:processing
+                                              completion:completion];
     [[RCRTCCmdService shareInstance] addCommand:cmd];
 }
 
