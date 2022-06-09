@@ -8,9 +8,7 @@
 #import "RCRTCIntroCommand.h"
 
 @interface RCRTCIntroCommand ()
-
-@property (nonatomic, copy)void(^callback)(BOOL isSuccess, NSInteger code, id response);
-
+@property (nonatomic, strong) NSMutableDictionary *response;
 @end
 
 @implementation RCRTCIntroCommand
@@ -34,21 +32,32 @@
 }
 
 - (void)prepare {
-    self.callback = self.params[@"callback"];
+    
 }
 
-- (void)fetchOpName:(NSString *)opName response:(id)response {
-    NSLog(@"%@ => response:%@", opName, response);
+- (void)processWithOpName:(NSString *)opName code:(NSInteger)code response:(id)response {
+    if (code == 0) {
+        if (![response isKindOfClass:NSDictionary.class]) {
+            return;
+        }
+        for (NSString *key in response) {
+            [self.response setObject:response[key] forKey:key];
+        }
+    }
+    self.code = code;
 }
 
 - (void)finished {
-    if (self.callback) {
-        self.callback(YES, 0, nil);
+    if (self.completion) {
+        self.completion(self.code == 0, self.code, self.response);
     }    
 }
 
-- (NSString *)cmdName {
-    return @"Intro command";
+- (NSMutableDictionary *)response {
+    if (!_response) {
+        _response = [NSMutableDictionary dictionary];
+    }
+    return _response;
 }
 
 @end

@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RCRTCCmdService.h"
 #import "RCRTCDataSnapshot.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -29,8 +30,11 @@ typedef NS_ENUM(NSInteger, RCRTCCommandStatus) {
 
 /// 当子任务执行结束当前 command 收到回调
 /// @param opName 对应的 op 名称
+/// @param code op 执行结果 0 成功, 非 0 失败
 /// @param response op 执行需要传递给到 cmd 的结果
-- (void)fetchOpName:(NSString *)opName response:(id)response;
+- (void)processWithOpName:(NSString *)opName
+                     code:(NSInteger)code
+                 response:(nullable id)response;
 
 /// 所有的子任务都执行完成回调
 - (void)finished;
@@ -46,11 +50,11 @@ typedef NS_ENUM(NSInteger, RCRTCCommandStatus) {
 
 @optional;
 /*
- 自定义任务执行顺序,当 executeType == RCRTCCommandExecuteType_custom 生效.
+ 自定义任务执行顺序,当 executeType == RCRTCCommandExecuteType_Custom 生效.
  设置系统优先级, 如下:
- @{@"SayHello":@(NSOperationQueuePriorityHigh),
- @"SayHi":@(NSOperationQueuePriorityHigh),
- @"End":@(NSOperationQueuePriorityNormal)}
+ @"OP1":@(NSOperationQueuePriorityHigh),
+ @"OP2":@(NSOperationQueuePriorityHigh),
+ @"OP3":@(NSOperationQueuePriorityNormal)
  */
 - (NSDictionary<NSString *,NSNumber *> *)sequenceDic;
 
@@ -58,13 +62,12 @@ typedef NS_ENUM(NSInteger, RCRTCCommandStatus) {
 
 @interface RCRTCCommand : NSObject <RCRTCCommandInterface>
 
-@property (nonatomic,   weak) RCRTCCommand *prev;
-@property (nonatomic, strong) RCRTCCommand *next;
-
 @property (nonatomic,   copy) NSString *cmdName;
 @property (nonatomic, assign) RCRTCCommandStatus status;
+@property (nonatomic, assign) NSInteger code;
 @property (nonatomic, strong) id<RCRTCDataSnapshotInterface> snapshot;
 @property (nonatomic, readonly,   copy) NSDictionary *params;
+@property (nonatomic, readonly,   copy) RCRTCCommandCompletion completion;
 @property (nonatomic, readonly, assign) BOOL isContinue;
 
 @end

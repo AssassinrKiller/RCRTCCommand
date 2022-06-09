@@ -22,7 +22,7 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [RCRTCCmdService commandWithCmdName:@"Intro" params:@{@"name":@"xuhuan"} completion:^(BOOL isSuccess, NSInteger code, id  _Nullable response) {
-        
+        NSLog(@"isSuccess:%@ --- response:%@",isSuccess ? @"成功" : @"失败", response);
     }];
     
     [RCRTCCmdService commandWithCmdName:@"JoinRoom"
@@ -33,9 +33,9 @@
                                  params:@{@"roomId":@"333"}
                              completion:nil];
     
-    [RCRTCCmdService commandWithCmdName:@"LeaveRoom"
-                                 params:@{@"roomId":@"333"}
-                             completion:nil];
+//    [RCRTCCmdService commandWithCmdName:@"LeaveRoom"
+//                                 params:@{@"roomId":@"333"}
+//                             completion:nil];
 }
 
 

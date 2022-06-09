@@ -13,16 +13,16 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RCRTCOperation : NSOperation
 
 - (void)prepare;
-- (void)action;
-- (void)finishedAction;
 - (BOOL)checkIsCancelled;
 - (BOOL)checkCommandStatus;
+- (BOOL)checkParamsIntegrality;
+- (void)action;
+- (void)finishedAction;
 
 @property (nonatomic, strong) RCRTCCommand *command;
-@property (nonatomic, assign) BOOL isContinue;
-@property (nonatomic, strong) id response;
 @property (nonatomic, assign) BOOL isSuccess;
 @property (nonatomic, assign) NSInteger code;
+@property (nonatomic, strong) id response;
 
 @end
 

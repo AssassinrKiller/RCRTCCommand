@@ -23,8 +23,5 @@
     [self finishedAction];
 }
 
-- (NSString *)description {
-    return @"join room";
-}
 
 @end

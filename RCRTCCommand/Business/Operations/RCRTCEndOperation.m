@@ -14,13 +14,11 @@
 }
 
 - (void)action {
-//    NSLog(@"end 请求操作");
-    sleep(5);
+    NSLog(@"end 请求操作");
+    self.isSuccess = YES;
+    self.code = 0;
+    self.response = @{@"birthday":@"19910825"};
     [self finishedAction];
-}
-
-- (NSString *)description{
-    return @"end ";
 }
 
 @end

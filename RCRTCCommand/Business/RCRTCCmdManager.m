@@ -6,7 +6,7 @@
 //
 
 #import "RCRTCCmdManager.h"
-#import "RCRTCCommand.h"
+#import "RCRTCCommand+private.h"
 #import "RCRTCOperation.h"
 
 @interface RCRTCCmdManager ()

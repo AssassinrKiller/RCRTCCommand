@@ -14,14 +14,13 @@
 
 - (void)action {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        sleep(3);
-//        NSLog(@"耗时操作 say Hi");
+//        sleep(2);
+        NSLog(@"耗时操作 say Hi");
+        self.isSuccess = YES;
+        self.code = 0;
+        self.response = @{@"sex":@"man"};
         [self finishedAction];
     });
-}
-
-- (NSString *)description {
-    return @"say hi";
 }
 
 @end

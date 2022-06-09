@@ -41,6 +41,12 @@
             [self finishedAction];
             return;
         }
+        
+        if (![self checkParamsIntegrality]) {
+            [self finishedAction];
+            return;
+        }
+    
         [self action];
     };
 }
@@ -59,16 +65,25 @@
         self.code = -1;
         return YES;
     }
+    if (!self.command.isContinue) {
+        self.isSuccess = NO;
+        self.code = -2;
+        return YES;
+    }
     return NO;
 }
 
 - (BOOL)checkCommandStatus {
-    _isContinue = self.command.isContinue;
-    if (!_isContinue) {
-        _isSuccess = NO;
-        _code = _isSuccess ? 0 : -1;
+    BOOL res = self.command.status == RCRTCCommandStatus_Normal;
+    if (!res) {
+        self.isSuccess = NO;
+        self.code = -3;
     }
-    return _isContinue;
+    return res;
+}
+
+- (BOOL)checkParamsIntegrality {
+    return YES;
 }
 
 - (void)finishedAction {
@@ -80,13 +95,13 @@
 
 - (void)setIsSuccess:(BOOL)isSuccess {
     _isSuccess = isSuccess;
-    _isContinue = _isSuccess;
 }
 
 - (void)messageToCommand {
     [self.command finishedWithOpName:self.name
-                            response:self.response
-                          isContinue:self.isContinue];
+                            isSucess:self.isSuccess
+                             errCode:self.code
+                            response:self.response];
 }
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key {

@@ -18,15 +18,14 @@
 
 - (void)action {
     dispatch_sync(dispatch_get_global_queue(0, 0), ^{
-        sleep(3);
-//        NSLog(@"耗时操作 say hello");
+//        sleep(2);
+        NSLog(@"耗时操作 say hello");
         self.isSuccess = YES;
+        self.code = 0;
+        self.response = @{@"name":@"xuhuan"};
         [self finishedAction];
     });
 }
 
-- (NSString *)description {
-    return @"say hello";
-}
 
 @end

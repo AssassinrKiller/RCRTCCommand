@@ -9,19 +9,27 @@
 #import "RCRTCCmdService.h"
 
 @interface RCRTCCommand ()
-@property (nonatomic,   copy) NSDictionary *params;
-@property (nonatomic, assign) BOOL isContinue;
+@property (nonatomic, copy) NSDictionary *params;
+@property (nullable, nonatomic, copy) RCRTCCommandCompletion completion;
+@property (nonatomic,   weak) RCRTCCommand *prev;
+@property (nonatomic, strong) RCRTCCommand *next;
 @end
 
-@implementation RCRTCCommand
+@implementation RCRTCCommand{
+    BOOL _isContinue;
+}
+
+@synthesize isContinue = _isContinue;
 
 - (void)dealloc {
     NSLog(@"%@ dealloc", self);
 }
 
-- (instancetype)initWithParams:(NSDictionary *)params {
+- (instancetype)initWithParams:(NSDictionary *)params
+                    completion:(RCRTCCommandCompletion)completion {
     if (self = [super init]) {
         self.params = params;
+        self.completion = completion;
         self.isContinue = YES;
         [self prepareToExecute];
     }
@@ -34,16 +42,17 @@
 }
 
 - (void)finishedWithOpName:(NSString *)opName
-                  response:(id)response
-                isContinue:(BOOL)isContinue {
-    NSLog(@"%@ child operation:[%@] is finished, to be continue:%@", self.cmdName, opName, @(isContinue));
-    self.isContinue = isContinue;
-    if (response) {
-        [self fetchOpName:opName response:response];
+                  isSucess:(BOOL)isSucess
+                   errCode:(NSInteger)errCode
+                  response:(nullable id)response {
+    NSLog(@"%@ child operation:[%@] is finished, code:%@", self.cmdName, opName, @(errCode));
+    if (self.executeType == RCRTCCommandExecuteType_Sync) {
+        self.isContinue = errCode == 0 ? YES : NO;
     }
+    [self processWithOpName:opName code:errCode response:response];
 }
 
-- (void)completion {
+- (void)commandFinished {
     NSLog(@"%@ completion", self.cmdName);
     [self finished];
 }
@@ -53,7 +62,7 @@
     
 }
 
-- (void)fetchOpName:(NSString *)opName response:(id)response {
+- (void)processWithOpName:(NSString *)opName code:(NSInteger)code response:(id)response {
     
 }
 
@@ -84,6 +93,9 @@
     };
 }
 
+- (BOOL)isContinue {
+    return _isContinue;
+}
 
 - (NSString *)description {
     NSString *status = @"";
@@ -100,8 +112,16 @@
         default:
             break;
     }
-    return [NSString stringWithFormat:@"%@:%p ,%@ ,params:%@, ops:%@",
+    return [NSString stringWithFormat:@"%@: %p ,%@ ,params:%@, ops:%@",
             self.cmdName ,self, status, self.params, self.opNames];
+}
+
+- (NSString *)cmdName {
+    return NSStringFromClass(self.class);
+}
+
+- (RCRTCCommandCompletion)completion {
+    return _completion;
 }
 
 @end

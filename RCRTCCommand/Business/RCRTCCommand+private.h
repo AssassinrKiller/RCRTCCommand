@@ -11,13 +11,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RCRTCCommand (private)
 
-- (instancetype)initWithParams:(NSDictionary *)params;
+@property (nonatomic,   weak) RCRTCCommand *prev;
+@property (nonatomic, strong) RCRTCCommand *next;
+
+- (instancetype)initWithParams:(NSDictionary *)params
+                    completion:(RCRTCCommandCompletion)completion;
 
 - (void)finishedWithOpName:(NSString *)opName
-                  response:(__nullable id)response
-                isContinue:(BOOL)isContinue;
-
-- (void)completion;
+                  isSucess:(BOOL)isSucess
+                   errCode:(NSInteger)errCode
+                  response:(nullable id)response;
+    
+- (void)commandFinished;
 
 @end
 

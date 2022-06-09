@@ -74,26 +74,22 @@
     
     [self.runQueue addBarrierBlock:^{
         __strong typeof(weakSelf)strongSelf = weakSelf;
-        [strongSelf.manager.currentCmd completion];
+        [strongSelf.manager.currentCmd commandFinished];
         [strongSelf tryToFetch];//执行下一个 cmd
     }];
     NSLog(@"fetchOperations count:%@",@(self.runQueue.operationCount));
 }
 
 + (void)commandWithCmdName:(NSString *)cmdName
-                    params:(NSDictionary * _Nullable)params
-                completion:(RCRTCCommandCompletion _Nullable)completion {
-    NSMutableDictionary *opParams = params ? [params mutableCopy] : @{}.mutableCopy;
-    if (completion) {
-        opParams[@"callback"] = completion;
-    }
+                    params:(nullable NSDictionary *)params
+                completion:(nullable RCRTCCommandCompletion)completion {
     NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Command",cmdName];
     Class cmdClass = NSClassFromString(classStr);
     if (!cmdClass) {
         NSLog(@"command is not exist, please check it");
         return;
     }
-    RCRTCCommand *cmd = [[cmdClass alloc] initWithParams:params];
+    RCRTCCommand *cmd = [[cmdClass alloc] initWithParams:params.mutableCopy completion:completion];
     [[RCRTCCmdService shareInstance] addCommand:cmd];
 }
 

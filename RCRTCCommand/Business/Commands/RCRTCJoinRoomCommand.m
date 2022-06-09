@@ -25,8 +25,4 @@
     
 }
 
-- (NSString *)cmdName {
-    return @"joinRoom command";
-}
-
 @end

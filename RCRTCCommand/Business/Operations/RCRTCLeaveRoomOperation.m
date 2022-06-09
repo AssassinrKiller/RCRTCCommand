@@ -17,7 +17,4 @@
     [self finishedAction];
 }
 
-- (NSString *)description {
-    return @"leave room";
-}
 @end
