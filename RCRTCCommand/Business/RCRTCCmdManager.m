@@ -46,6 +46,13 @@
 - (NSMutableArray<RCRTCOperation *> *)fetchOperationInternal {
     RCRTCCommand *cmd = _head.next;
     NSMutableArray<RCRTCOperation *> *ops = [NSMutableArray array];
+    
+    if (cmd.status == RCRTCCommandStatus_Discard) {
+        NSLog(@"currentCommand:%@ pending, should be discard", cmd.cmdName);
+        [self sortWithCommand:cmd];
+        return [self fetchOperationInternal];
+    }
+    
     for (NSString *opName in cmd.opNames) {
         NSString *classStr = [NSString stringWithFormat:@"RCRTC%@Operation",opName];
         Class class = NSClassFromString(classStr);
@@ -66,6 +73,12 @@
         self.currentCmd = cmd;
     }
     
+    [self sortWithCommand:cmd];
+    
+    return ops;
+}
+
+- (void)sortWithCommand:(RCRTCCommand *)cmd {
     if (--_cmdCount == 0) {
         _head.next = _tail;
         _tail.prev = _head;
@@ -73,13 +86,8 @@
         _head.next = cmd.next;
         cmd.next.prev = _head;
     }
-    
-    if (cmd.status == RCRTCCommandStatus_Discard) {
-        NSLog(@"currentCommand:%@ invalid, should be discard", cmd.cmdName);
-        return [self fetchOperationInternal];
-    }
-    return ops;
 }
+
 
 - (void)setDependencyWithOps:(NSArray *)ops{
     RCRTCCommandExecuteType executeType = self.currentCmd.executeType;

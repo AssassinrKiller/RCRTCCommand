@@ -33,9 +33,9 @@
                                  params:@{@"roomId":@"333"}
                              completion:nil];
     
-//    [RCRTCCmdService commandWithCmdName:@"LeaveRoom"
-//                                 params:@{@"roomId":@"333"}
-//                             completion:nil];
+    [RCRTCCmdService commandWithCmdName:@"LeaveRoom"
+                                 params:@{@"roomId":@"333"}
+                             completion:nil];
 }
 
 
