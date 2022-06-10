@@ -164,7 +164,7 @@
 }
 
 - (void)showAllCommands {
-    NSLog(@"pendingCommandCount:%@", @(_cmdCount));
+//    NSLog(@"pendingCommandCount:%@", @(_cmdCount));
     RCRTCCommand *current = _head.next;
     while (current != _tail) {
         NSLog(@"pendingCommand:%@", current);

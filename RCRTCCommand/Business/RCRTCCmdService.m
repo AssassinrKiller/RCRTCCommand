@@ -64,7 +64,7 @@
 
 - (void)fetchOperations {
 #if DEBUG
-    [_manager showAllCommands];
+//    [_manager showAllCommands];
 #endif
     NSArray *ops = [_manager fetchOperations];
     

@@ -10,23 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol RCRTCDataSnapshotInterface <NSObject>
-
 @property (nonatomic, copy) NSString *roomId;
-
 @property (nonatomic, readonly, copy) NSString *currentUserId;
-
-@end
-
-@class RCRTCCommand;
-
-@protocol RCRTCCmdServiceDelegate <NSObject>
-
-@optional
-
-- (id<RCRTCDataSnapshotInterface>)fetchSnapshot;
-
-- (void)willPushCommand:(RCRTCCommand *)command inQueue:(NSArray *)queue;
-
 @end
 
 @interface RCRTCDataSnapshot : NSObject <RCRTCDataSnapshotInterface>

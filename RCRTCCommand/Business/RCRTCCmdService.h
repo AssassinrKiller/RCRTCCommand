@@ -10,6 +10,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class RCRTCCommand;
+
+@protocol RCRTCCmdServiceDelegate <NSObject>
+
+@optional
+
+- (id<RCRTCDataSnapshotInterface>)fetchSnapshot;
+
+- (void)willPushCommand:(RCRTCCommand *)command inQueue:(NSArray *)queue;
+
+@end
+
 typedef void (^RCRTCCommandCompletion)(BOOL isSuccess, NSInteger code, id _Nullable response);
 
 @interface RCRTCCmdService : NSObject

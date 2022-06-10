@@ -7,6 +7,7 @@
 
 #import "ViewController.h"
 #import "RCRTCCmdService.h"
+#import "RCRTCDataSnapshot.h"
 #import "RCRTCIntroCommand.h"
 #import "RCRTCJoinRoomCommand.h"
 #import "RCRTCLeaveRoomCommand.h"
@@ -20,9 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [RCRTCCmdService setServiceDelegate:self];
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    
     [RCRTCCmdService commandWithClass:RCRTCIntroCommand.class
                                params:@{@"name":@"xuhuan"}
                            completion:^(BOOL isSuccess, NSInteger code, id  _Nullable response) {
@@ -36,7 +35,10 @@
     [RCRTCCmdService commandWithClass:RCRTCJoinRoomCommand.class
                                  params:@{@"roomId":@"333"}
                              completion:nil];
-    
+
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [RCRTCCmdService commandWithClass:RCRTCLeaveRoomCommand.class
                                  params:@{@"roomId":@"333"}
                              completion:nil];
@@ -44,7 +46,9 @@
 
 
 - (id<RCRTCDataSnapshotInterface>)fetchSnapshot {
-    return nil;
+    id<RCRTCDataSnapshotInterface> snapshot = [RCRTCDataSnapshot SnapshotWithData:@{}];
+    snapshot.roomId = @"890";
+    return snapshot;
 }
 
 - (void)willPushCommand:(RCRTCCommand *)command inQueue:(NSArray *)queue {
